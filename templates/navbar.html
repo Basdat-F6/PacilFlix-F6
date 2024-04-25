@@ -1,10 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<nav class="navbar bg-body-tertiary">
-    <form class="container-fluid justify-content-start">
-      <button class="btn btn-outline-success me-2" type="button">Main button</button>
-      <button class="btn btn-sm btn-outline-secondary" type="button">Smaller button</button>
-    </form>
-  </nav>
+<nav class="navbar bg-dark">
+    <div class="container-fluid">
+        <a href="https://fontmeme.com/netflix-font/"><img src="https://fontmeme.com/permalink/240425/403971fa20b165cad58adeeed6f51153.png" height="40" alt="pacilflix-logo" border="0"></a>
+            <ul class="nav nav-underline">
+                <li class="nav-item">
+                  <a class="nav-link" style="color: #E50914;" href="#">Tayangan</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" style="color: #E50914;" href="#">Daftar</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" style="color: #E50914;" href="#">Langganan</a>
+                </li>
+              </ul>
+        <div class="login-logout">
+            <!-- if authenticated logout, else login-->
+            <button type="button" class="btn btn-outline-danger">login/logout button</button>
+        </div>
+    </div>
+</nav>
 {% endblock %}
