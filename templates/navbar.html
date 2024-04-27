@@ -3,22 +3,44 @@
 {% block content %}
 <nav class="navbar bg-dark">
     <div class="container-fluid">
-        <a href="https://fontmeme.com/netflix-font/"><img src="https://fontmeme.com/permalink/240425/403971fa20b165cad58adeeed6f51153.png" height="40" alt="pacilflix-logo" border="0"></a>
-            <ul class="nav nav-underline">
-                <li class="nav-item">
-                  <a class="nav-link" style="color: #E50914;" href="#">Tayangan</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" style="color: #E50914;" href="#">Daftar</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" style="color: #E50914;" href="#">Langganan</a>
-                </li>
-              </ul>
+        <a href="https://fontmeme.com/netflix-font/">
+          <img src="https://fontmeme.com/permalink/240425/403971fa20b165cad58adeeed6f51153.png" height="40" alt="pacilflix-logo" border="0">
+        </a>
+
+        <ul class="nav nav-underline">
+          <li class="nav-item">
+            <a class="nav-link" style="color: #E50914;" href="#">Trailer Tayangan</a>
+          </li>
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" style="color: #E50914;" href="#">Daftar Tayangan</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" style="color: #E50914;" href="#">Kelola Daftar Favorit</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" style="color: #E50914;" href="#">Kelola Daftar Unduhan</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" style="color: #E50914;" href="#">Kelola Langganan</a>
+          </li>
+        </ul>
         <div class="login-logout">
-            <!-- if authenticated logout, else login-->
-            <button type="button" class="btn btn-outline-danger">login/logout button</button>
+          <a href="{% url 'main:logout_user' %}">
+            <button type="button" class="btn btn-outline-danger">
+                Logout
+            </button>
+          </a>
         </div>
+        {% else %}
+        <div class="login-logout">
+          <a href="{% url 'main:show_welcome_page' %}">
+            <button type="button" class="btn btn-outline-danger">
+                Login
+            </button>
+          </a>
+        {% endif %}
+
     </div>
 </nav>
 {% endblock %}

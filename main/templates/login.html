@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>Login</title>
+    <style>
+        .center-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+        }
+
+        .login {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background: #fff;
+            margin-top: -50px;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        .staatliches-regular {
+            font-family: "Staatliches", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            font-size: xxx-large;
+        }
+    </style>
+{% endblock meta %}
+
+{% block content %}
+
+{% include 'navbar.html' %}
+
+<div class="center-container">
+    <div class="login">
+        <h1 class="staatliches-regular">Login</h1>
+        <form method="POST" action="">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>Username: </td>
+                    <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
+                </tr>
+                        
+                <tr>
+                    <td>Password: </td>
+                    <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td><input class="btn btn-danger" type="submit" value="Login" style="width: 100px;"></td>
+                </tr>
+            </table>
+        </form>
+
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}     
+            
+        Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a>
+    </div>
+</div>
+
+{% endblock content %}

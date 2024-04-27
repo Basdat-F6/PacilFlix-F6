@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>Register</title>
+    <style>
+        .center-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+        }
+
+        .register {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background: #fff;
+            margin-top: -50px;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        .staatliches-regular {
+            font-family: "Staatliches", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            font-size: xx-large;
+        }
+
+    </style>
+{% endblock meta %}
+
+{% block content %}  
+
+{% include 'navbar.html' %}
+<div class="center-container"> 
+    <div class="register">
+        <h1 class="staatliches-regular">Register</h1>  
+
+        <form method="POST" >  
+            {% csrf_token %}  
+            <table>  
+                {{ form.as_table }}  
+                <tr>  
+                    <td></td>
+                    <td><input class="btn btn-danger" type="submit button" name="submit" value="Daftar"/></td>  
+                </tr>  
+            </table>  
+        </form>
+
+    {% if messages %}  
+        <ul>   
+            {% for message in messages %}  
+                <li>{{ message }}</li>  
+                {% endfor %}  
+        </ul>   
+    {% endif %}
+    </div>
+</div>
+
+{% endblock content %}
