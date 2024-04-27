@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages  
 from django.contrib.auth import authenticate, login, logout
+from .forms import RegisterForm
 
 def show_landing_page(request):
     return render(request, "landing-page.html")
@@ -11,16 +12,14 @@ def show_welcome_page(request):
     return render(request, "welcome.html")
 
 def register(request):
-    form = UserCreationForm()
-
-    if request.method == "POST":
-        form = UserCreationForm(request.POST)
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Your account has been successfully created!')
-            return redirect('main:login_user')
-    context = {'form':form}
-    return render(request, 'register.html', context)
+            return redirect('login_user')
+    else:
+        form = RegisterForm()
+    return render(request, 'register.html', {'form': form})
 
 def login_user(request):
     if request.method == 'POST':

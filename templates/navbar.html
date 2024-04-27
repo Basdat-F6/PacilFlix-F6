@@ -8,9 +8,15 @@
         </a>
 
         <ul class="nav nav-underline">
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" style="color: #E50914;" href="#">Halo, {{ user.username }}</a>
+          </li>
+          {% endif %}
           <li class="nav-item">
             <a class="nav-link" style="color: #E50914;" href="#">Trailer Tayangan</a>
           </li>
+
           {% if user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" style="color: #E50914;" href="#">Daftar Tayangan</a>
