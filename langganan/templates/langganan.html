@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>Kelola Langganan</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <style>
+        .staatliches-regular {
+            font-family: "Staatliches", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            font-size: large;
+        }
+
+    </style>
+{% endblock meta %}
+
+{% block content %}
+
+{% include 'navbar.html' %}
+
+<div class="container">
+    <br>
+
+    <h1 class="d-flex justify-content-center">Kelola Langganan</h1>
+    
+    <br>
+    
+    <h5>Paket Langganan Aktif Anda:</h5>
+
+    <br>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nama</th>
+                <th>Harga</th>
+                <th>Resolusi Layar</th>
+                <th>Dukungan Perangkat</th>
+                <th>Tanggal Dimulai</th>
+                <th>Tanggal Akhir</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Plus</td>
+                <td>Rp100.000,00</td>
+                <td>1080p</td>
+                <td>PC, PS5</td>
+                <td>2022-04-02</td>
+                <td>2022-04-06</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    
+    <h5>Pilih Paket Lain:</h5>
+
+    <br>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nama</th>
+                <th>Harga</th>
+                <th>Resolusi Layar</th>
+                <th>Dukungan Perangkat</th>
+                <th>Beli</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Esential</td>
+                <td>Rp50.000,00</td>
+                <td>720p</td>
+                <td>Mobile, Tablet, Smartwatch</td>
+                <td><button type="button" class="btn btn-outline-primary">Beli</button></td>
+            </tr>
+            <tr>
+                <td>Plus</td>
+                <td>Rp100.000,00</td>
+                <td>1080p</td>
+                <td>PC, PS5</td>
+                <td><button type="button" class="btn btn-outline-primary">Beli</button></td>
+            </tr>
+            <tr>
+                <td>Cinema</td>
+                <td>Rp200.000,00</td>
+                <td>4K</td>
+                <td>Smart TV, HTPC, Carplay</td>
+                <td><button type="button" class="btn btn-outline-primary">Beli</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    
+    <h5>Riwayat Transaksi:</h5>
+
+    <br>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nama Paket</th>
+                <th>Tanggal Dimulai</th>
+                <th>Tanggal Akhir</th>
+                <th>Metode Pembayaran</th>
+                <th>Tanggal Pembayaran</th>
+                <th>Total Pembayaran</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Esential</td>
+                <td>2022-02-18</td>
+                <td>2022-03-02</td>
+                <td>PayPal</td>
+                <td>2022-02-18 17:00:00</td>
+                <td>Rp50.000,00</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+{% endblock content %}
