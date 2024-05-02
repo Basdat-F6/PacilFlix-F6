@@ -15,12 +15,12 @@
     </script>
 {% endblock meta %}
 {% block content %}
-<body>
-    <div class="container">
+{% include 'navbar.html' %}
+    <div class="container my-12">
         <h1 class="mx-auto max-w-2xl text-4xl font-bold tracking-tight text-gray-900 sm:text-4xl text-netflix">Reviews</h1>
         <h2 class="mx-auto max-w-2xl text-7xl font-medium tracking-tight text-gray-900 sm:text-7xl">The Internships</h2>
-        <div class="max-w-xl mb-5 mx-auto mt-16 flex w-full flex-col border rounded-lg bg-white p-8">
-            <p class="mb-2 text-3xl text-gray-600">Share your thoughts!</p>
+        <div class="max-w-xl mb-5 mx-auto mt-16 flex w-full flex-col border-2 rounded-lg bg-white p-8">
+            <p class="mb-2 text-3xl text-black">Share your thoughts!</p>
             <div class="mb-4">
                 <label for="rate" class="text-sm leading-7 text-gray-600">Rating</label>
                 <select name="select" id="select" class="block w-1/2 rounded-md border border-slate-300 bg-white px-3 py-4 font-semibold text-gray-500 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 sm:text-sm">

@@ -16,7 +16,9 @@
 {% endblock meta %}
 {% block content %}
 
-<div class="container">
+{% include 'navbar.html' %}
+
+<div class="container my-12">
   <h1 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl text-netflix">Daftar Trailers</h1>
   
   <!-- Form Pencarian -->
@@ -32,20 +34,22 @@
 </form>
 
   <!-- 10 Tayangan Terbaik Minggu Ini -->
-  <ul class="flex gap-3 my-8 md:my-12 flex-wrap justify-center px-4 md:px-8 max-w-sm">
+  <div class="mx-auto relative flex justify-center">
+    <ul class="flex gap-3 my-8 md:my-12 flex-wrap justify-center px-4 md:px-8 max-w-sm">
+      <button
+      class="px-2 py-1 md:text-lg relative bg-gray-100 rounded-lg select-none hover:shadow hover:shadow-teal-500 hover:outline hover:outline-teal-600">
+      <a href="{% url 'trailer:show-trailers' %}"  class="no-underline text-black visited:text-netflix">
+        Top 10 Global
+      </a>
+    </button>
     <li
     class="px-2 py-1 md:text-lg relative bg-gray-100 rounded-lg select-none hover:shadow hover:shadow-teal-500 hover:outline hover:outline-teal-600">
-    <a href="{% url 'trailer:show-trailers' %}">
-      Top 10 Global
+    <a href="top-indonesia/" class="no-underline text-black visited:text-netflix">
+      Top 10 Indonesia
     </a>
   </li>
-  <li
-  class="px-2 py-1 md:text-lg relative bg-gray-100 rounded-lg select-none hover:shadow hover:shadow-teal-500 hover:outline hover:outline-teal-600">
-  <a href="top-indonesia/">
-    Top 10 Indonesia
-  </a>
-</li>
-</ul>
+  </ul>
+  </div>
 <h2 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">10 Tayangan Terbaik Minggu Ini</h2>
 <table class="table table-hover">
     <tr>

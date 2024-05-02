@@ -15,8 +15,8 @@
     </script>
 {% endblock meta %}
 {% block content %}
-<body>
-    <div class="container">
+{% include 'navbar.html' %}
+    <div class="container my-12">
         <h1 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl text-netflix">Daftar Tayangan</h1>
         
         <!-- Form Pencarian -->
@@ -30,21 +30,22 @@
                 </button>
             </label>
         </form>
-
-        <ul class="flex gap-3 my-8 md:my-12 flex-wrap justify-center px-4 md:px-8 max-w-sm">
-            <li
-                class="px-2 py-1 md:text-lg relative bg-gray-100 rounded-lg select-none hover:shadow hover:shadow-teal-500 hover:outline hover:outline-teal-600">
-                <a href="{% url 'tayangan:watch' %}">
-                    Top 10 Global
-                </a>
-            </li>
-            <li
-                class="px-2 py-1 md:text-lg relative bg-gray-100 rounded-lg select-none hover:shadow hover:shadow-teal-500 hover:outline hover:outline-teal-600">
-                <a href="topindonesia/">
-                    Top 10 Indonesia
-                </a>
-            </li>
-        </ul>
+        <div class="mx-auto relative flex justify-center">
+            <ul class="flex gap-3 my-8 md:my-12 flex-wrap justify-center px-4 md:px-8 max-w-sm">
+                <li
+                    class="px-2 py-1 md:text-lg relative bg-gray-100 rounded-lg select-none hover:shadow hover:shadow-teal-500 hover:outline hover:outline-teal-600">
+                    <a href="{% url 'tayangan:watch' %}" class="no-underline text-black visited:text-netflix">
+                        Top 10 Global
+                    </a>
+                </li>
+                <li
+                    class="px-2 py-1 md:text-lg relative bg-gray-100 rounded-lg select-none hover:shadow hover:shadow-teal-500 hover:outline hover:outline-teal-600">
+                    <a href="topindonesia/" class="no-underline text-black visited:text-netflix">
+                        Top 10 Indonesia
+                    </a>
+                </li>
+            </ul>
+        </div>
 
         <!-- 10 Tayangan Terbaik Minggu Ini -->
         <h2 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">10 Tayangan Terbaik Minggu Ini</h2>

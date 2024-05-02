@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+
 {% block meta %}
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -15,8 +16,9 @@
     </script>
 {% endblock meta %}
 {% block content %}
-<body>
-    <div class="container">
+
+{% include 'navbar.html' %}
+    <div class="container my-12">
         <h1 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl text-netflix">Daftar Trailers</h1>
         
         <!-- Form Pencarian -->
@@ -32,7 +34,7 @@
         </form>
 
         <!-- Hasil Pencarian -->
-        <h2 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Hasil Pencarian</h2>
+        <h2 class="mx-auto mt-12 max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Hasil Pencarian</h2>
         <table class="table table-hover">
             <tr>
                 <th>Judul</th>

@@ -17,20 +17,20 @@
 {% endblock meta %}
 
 {% block content %}
-<body>
-    <div class="container">
-        <h1 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl text-netflix">Episode Details</h1>
-        <h2 class="mx-auto max-w-2xl text-7xl font-medium tracking-tight text-gray-900 sm:text-7xl">Summer Strike</h2>
+{% include 'navbar.html' %}
+    <div class="container my-12 max-w-4xl ">
+        <h1 class="mx-auto text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl text-netflix">Episode Details</h1>
+        <h2 class="mx-auto text-7xl font-medium tracking-tight text-gray-900 sm:text-7xl">Summer Strike</h2>
 
-        <h2 class="mx-auto max-w-2xl text-l font-medium tracking-tight text-gray-900 sm:text-4xl text-black">S1.E2 ∙ The Perfect Place for a New Beginning</h2>
+        <h2 class="mx-auto text-l font-medium tracking-tight text-gray-900 sm:text-4xl text-black">S1.E2 ∙ The Perfect Place for a New Beginning</h2>
         
-        <div class="flex flex-col items-center justify-center gap-5 mt-6 md:flex-row">
-            <a class="inline-block my-4 px-6 py-4 text-white transition-all bg-netflix dark:bg-white dark:text-gray-800 rounded-md shadow-xl sm:w-auto hover:bg-gray-900 hover:text-white shadow-neutral-300 dark:shadow-neutral-700 hover:shadow-2xl hover:shadow-neutral-400 hover:-tranneutral-y-px" href="">
+        <div class="flex flex-col gap-5 mt-6 md:flex-row">
+            <a class="no-underline my-4 px-6 py-4 text-white transition-all bg-netflix dark:bg-white dark:text-gray-800 rounded-md shadow-xl sm:w-auto hover:bg-gray-900 hover:text-white shadow-neutral-300 dark:shadow-neutral-700 hover:shadow-2xl hover:shadow-neutral-400 hover:-tranneutral-y-px" href="">
             Download Episode
             </a>
         </div>
 
-        <h2 class="mx-auto max-w-2xl text-l font-medium tracking-tight text-gray-900 sm:text-4xl text-netflix">Tonton episode lainnya</h2>
+        <h2 class="mx-auto text-l font-medium tracking-tight text-gray-900 sm:text-4xl text-netflix">Tonton episode lainnya</h2>
         <div class="table-responsive">
             <table class="table table-hover mt-4">
                 <thead>

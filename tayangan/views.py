@@ -84,7 +84,7 @@ def search(request):
     context = {
         "data": data,
     }
-    return render(request, "hasil_pencarian.html", context)
+    return render(request, "hasil.html", context)
 
 def topindonesia(request):
     context = {

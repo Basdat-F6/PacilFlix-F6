@@ -17,19 +17,19 @@
 {% endblock meta %}
 
 {% block content %}
-<body>
-    <div class="container">
+{% include 'navbar.html' %}
+    <div class="container my-12">
         <h1 class="mx-auto max-w-2xl text-4xl font-bold tracking-tight text-gray-900 sm:text-4xl text-netflix">Series Details</h1>
         <h2 class="mx-auto max-w-2xl text-7xl font-medium tracking-tight text-gray-900 sm:text-7xl">Summer Strike</h2>
 
         <div class="flex justify-center gap-2 my-4">
-            <a href="{% url 'tayangan:episode' %}" class="rounded-md bg-gradient-to-r from-netflix to-darker px-6 py-3 text-white hover:from-darker hover:to-darker">
+            <a href="{% url 'tayangan:episode' %}" class="no-underline bg-gradient-to-r from-netflix to-darker px-6 py-3 text-white hover:from-darker hover:to-darker">
                 Episode 1
             </a>
-            <a href="{% url 'tayangan:episode' %}" class="rounded-md bg-gradient-to-r from-netflix to-darker px-6 py-3 text-white hover:from-darker hover:to-darker">
+            <a href="{% url 'tayangan:episode' %}" class="no-underline bg-gradient-to-r from-netflix to-darker px-6 py-3 text-white hover:from-darker hover:to-darker">
                 Episode 2
             </a>
-            <a href="{% url 'tayangan:episode' %}" class="rounded-md bg-gradient-to-r from-netflix to-darker px-6 py-3 text-white hover:from-darker hover:to-darker">
+            <a href="{% url 'tayangan:episode' %}" class="no-underline bg-gradient-to-r from-netflix to-darker px-6 py-3 text-white hover:from-darker hover:to-darker">
                 Episode 3
             </a>
         </div>
@@ -79,9 +79,10 @@
             </tbody>
         </table>
 
-        <a class="inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all rounded-md shadow-xl sm:w-auto bg-gradient-to-r from-blue-600 to-blue-500 hover:bg-gradient-to-b dark:shadow-blue-900 shadow-blue-200 hover:shadow-2xl hover:shadow-blue-400 hover:-tranneutral-y-px " href="{% url 'ulasan:show-reviews' %}">
+        <a class="no-underline inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all rounded-md shadow-xl sm:w-auto bg-gradient-to-r from-netflix to-darker hover:bg-gradient-to-b dark:shadow-blue-900 shadow-netflix-darker hover:shadow-2xl hover:shadow-netflix hover:-tranneutral-y-px " href="{% url 'ulasan:show-reviews' %}">
             Lihat Ulasan
         </a>
+
     </div>
 </body>
 {% endblock %}
