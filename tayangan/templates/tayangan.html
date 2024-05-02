@@ -13,40 +13,6 @@
           }
         }
     </script>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        tr:hover {
-            background-color: #e8f8ff;
-        }
-
-        a {
-            color: blue;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-    </style>
 {% endblock meta %}
 {% block content %}
 <body>
@@ -65,32 +31,52 @@
             </label>
         </form>
 
+        <ul class="flex gap-3 my-8 md:my-12 flex-wrap justify-center px-4 md:px-8 max-w-sm">
+            <li
+                class="px-2 py-1 md:text-lg relative bg-gray-100 rounded-lg select-none hover:shadow hover:shadow-teal-500 hover:outline hover:outline-teal-600">
+                <a href="{% url 'tayangan:watch' %}">
+                    Top 10 Global
+                </a>
+            </li>
+            <li
+                class="px-2 py-1 md:text-lg relative bg-gray-100 rounded-lg select-none hover:shadow hover:shadow-teal-500 hover:outline hover:outline-teal-600">
+                <a href="topindonesia/">
+                    Top 10 Indonesia
+                </a>
+            </li>
+        </ul>
+
         <!-- 10 Tayangan Terbaik Minggu Ini -->
         <h2 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">10 Tayangan Terbaik Minggu Ini</h2>
-        <table class="table-auto hover:table-fixed">
-            <tr>
-                <th>Judul</th>
-                <th>Sinopsis</th>
-                <th>Trailer</th>
-                <th>Tanggal Rilis</th>
-                <th>Total View</th>
-                <th>Aksi</th>
-            </tr>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Judul</th>
+                    <th>Sinopsis</th>
+                    <th>Trailer</th>
+                    <th>Tanggal Rilis</th>
+                    <th>Total View</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
             <!-- Hardcoded data untuk 10 tayangan terbaik -->
-            <tr>
-                <td>Judul Tayangan 1</td>
-                <td>Sinopsis singkat 1</td>
-                <td><a href="https://www.youtube.com/watch?v=ft70sAYrFyY">Trailer</a></td>
-                <td>Tanggal Rilis 1</td>
-                <td>Total View 1</td>
-                <td><a href="#">Halaman Tayangan</a></td>
-            </tr>
-            <!-- tambahkan baris data lainnya sesuai kebutuhan -->
+            <tbody>
+                {% for tayangan in data %}
+                <tr>
+                    <td>{{ tayangan.judul }}</td>
+                    <td>{{ tayangan.sinopsis }}</td>
+                    <td><a href="{{ tayangan.trailer }}">Trailer</a></td>
+                    <td>{{ tayangan.tanggal_rilis }}</td>
+                    <td>{{ tayangan.total_view }}</td>
+                    <td><a href="{% url 'tayangan:detail-film' %}">Halaman Tayangan</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
 
         <!-- Semua Film Tersedia -->
         <h2 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Semua Film Tersedia</h2>
-        <table>
+        <table class="table table-hover">
             <tr>
                 <th>Judul</th>
                 <th>Sinopsis</th>
@@ -113,7 +99,7 @@
 
         <!-- Semua Series Tersedia -->
         <h2 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Semua Series Tersedia</h2>
-        <table>
+        <table class="table table-hover">
             <!-- Hardcoded data untuk semua series -->
             <tr>
                 <td>Judul Series 1</td>

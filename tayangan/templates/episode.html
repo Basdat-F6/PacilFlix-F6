@@ -13,42 +13,84 @@
             }
         }
     }
-    </script>
+</script>
 {% endblock meta %}
 
 {% block content %}
 <body>
     <div class="container">
-        <h1 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl text-netflix">Judul Episode Bagus</h1>
-        <h2 class="mx-auto max-w-xl text-l font-medium tracking-tight text-gray-900 sm:text-4xl text-black">Judul Series</h2>
+        <h1 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl text-netflix">Episode Details</h1>
+        <h2 class="mx-auto max-w-2xl text-7xl font-medium tracking-tight text-gray-900 sm:text-7xl">Summer Strike</h2>
+
+        <h2 class="mx-auto max-w-2xl text-l font-medium tracking-tight text-gray-900 sm:text-4xl text-black">S1.E2 ∙ The Perfect Place for a New Beginning</h2>
         
         <div class="flex flex-col items-center justify-center gap-5 mt-6 md:flex-row">
-            <a class="inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all bg-netflix dark:bg-white dark:text-gray-800 rounded-md shadow-xl sm:w-auto hover:bg-gray-900 hover:text-white shadow-neutral-300 dark:shadow-neutral-700 hover:shadow-2xl hover:shadow-neutral-400 hover:-tranneutral-y-px" href="">
-            Download Film
+            <a class="inline-block my-4 px-6 py-4 text-white transition-all bg-netflix dark:bg-white dark:text-gray-800 rounded-md shadow-xl sm:w-auto hover:bg-gray-900 hover:text-white shadow-neutral-300 dark:shadow-neutral-700 hover:shadow-2xl hover:shadow-neutral-400 hover:-tranneutral-y-px" href="">
+            Download Episode
             </a>
         </div>
+
         <h2 class="mx-auto max-w-2xl text-l font-medium tracking-tight text-gray-900 sm:text-4xl text-netflix">Tonton episode lainnya</h2>
-        <div class="flex justify-center gap-2">
-            <button class="rounded-md bg-gradient-to-r from-netflix to-darker px-6 py-3 text-white hover:from-darker hover:to-darker">
-                Episode 1
-            </button>
-            <button class="rounded-md bg-gradient-to-r from-netflix to-darker px-6 py-3 text-white hover:from-darker hover:to-darker">
-                Episode 2
-            </button>
-            <button class="rounded-md bg-gradient-to-r from-netflix to-darker px-6 py-3 text-white hover:from-darker hover:to-darker">
-                Episode 3
-            </button>
+        <div class="table-responsive">
+            <table class="table table-hover mt-4">
+                <thead>
+                    <tr>
+                        <th>Episode</th>
+                        <th>Tonton Sekarang</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Episode 1</td>
+                        <td>
+                            <button class="rounded-md bg-black px-6 py-3 text-white hover:from-darker hover:to-darker">
+                                Tonton Sekarang
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Episode 3</td>
+                        <td>
+                            <button class="rounded-md bg-black px-6 py-3 text-white hover:from-darker hover:to-darker">
+                                Tonton Sekarang
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Episode 4</td>
+                        <td>
+                            <button class="rounded-md bg-black px-6 py-3 text-white hover:from-darker hover:to-darker">
+                                Tonton Sekarang
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
-
-
-        <p><strong>Sinopsis:</strong> Sinopsis tayangan pencarian</p>
-        <p><strong>Durasi Film:</strong> 90 menit</p>
-        <p><strong>Tanggal Rilis:</strong> Tanggal Rilis Tayangan</p>
-        <p><strong>URL Episode:</strong> #####</p>
-
+        <div class="table-responsive">
+            <table class="table table-hover mt-6">
+                <tbody>
+                    <tr>
+                        <td><strong>Sinopsis</strong></td>
+                        <td>Sinopsis tayangan pencarian</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Durasi Film</strong></td>
+                        <td>90 menit</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tanggal Rilis</strong></td>
+                        <td>Tanggal Rilis Tayangan</td>
+                    </tr>
+                    <tr>
+                        <td><strong>URL Episode</strong></td>
+                        <td><a href="https://www.youtube.com/watch?v=q3zqJs7JUCQ">https://www.youtube.com/watch?v=q3zqJs7JUCQ</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
-</html>
 
 {% endblock %}

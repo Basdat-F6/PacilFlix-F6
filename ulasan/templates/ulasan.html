@@ -13,49 +13,14 @@
           }
         }
     </script>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        tr:hover {
-            background-color: #e8f8ff;
-        }
-
-        a {
-            color: blue;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-    </style>
 {% endblock meta %}
 {% block content %}
 <body>
     <div class="container">
-
-        <h1 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl text-netflix">Reviews</h1>
-        <div class="max-w-xl mx-auto mt-16 flex w-full flex-col border rounded-lg bg-white p-8">
-            <h2 class="title-font mb-1 text-lg font-medium text-gray-900">Review</h2>
-            <p class="mb-5 leading-relaxed text-gray-600">Share your thoughts!</p>
+        <h1 class="mx-auto max-w-2xl text-4xl font-bold tracking-tight text-gray-900 sm:text-4xl text-netflix">Reviews</h1>
+        <h2 class="mx-auto max-w-2xl text-7xl font-medium tracking-tight text-gray-900 sm:text-7xl">The Internships</h2>
+        <div class="max-w-xl mb-5 mx-auto mt-16 flex w-full flex-col border rounded-lg bg-white p-8">
+            <p class="mb-2 text-3xl text-gray-600">Share your thoughts!</p>
             <div class="mb-4">
                 <label for="rate" class="text-sm leading-7 text-gray-600">Rating</label>
                 <select name="select" id="select" class="block w-1/2 rounded-md border border-slate-300 bg-white px-3 py-4 font-semibold text-gray-500 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 sm:text-sm">
@@ -75,7 +40,7 @@
     
             <!-- Semua Film Tersedia -->
         <h2 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Daftar Ulasan</h2>
-        <table>
+        <table class="table table-hover">
             <tr>
                 <th>Username</th>
                 <th>Rating</th>

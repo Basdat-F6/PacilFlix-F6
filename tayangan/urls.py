@@ -8,5 +8,6 @@ urlpatterns = [
     path('detail-series/', detail_series, name='detail-series'),
     path('episode/', episode, name='episode'),
     path('search/', search, name='search'),
+    path('topindonesia/', topindonesia, name='topindonesia'),
 
 ]

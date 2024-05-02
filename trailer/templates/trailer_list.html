@@ -1,5 +1,3 @@
-<!-- trailers/templates/trailers/trailer_list.html -->
-
 {% extends 'base.html' %}
 
 {% block meta %}
@@ -15,40 +13,6 @@
           }
         }
     </script>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        tr:hover {
-            background-color: #e8f8ff;
-        }
-
-        a {
-            color: blue;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-    </style>
 {% endblock meta %}
 {% block content %}
 
@@ -56,47 +20,34 @@
   <h1 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl text-netflix">Daftar Trailers</h1>
   
   <!-- Form Pencarian -->
-  <form action="" method="get">
-      <label for="search-bar" class="mx-auto mt-8 relative bg-white min-w-sm max-w-2xl flex flex-col md:flex-row items-center justify-center border py-2 px-2 rounded-2xl gap-2 shadow-2xl focus-within:border-gray-300">
-          <input id="search-bar" placeholder="your keyword here" name="q" class="px-6 py-2 w-full rounded-md flex-1 outline-none bg-white" required="">
-          <button type="submit" class="w-full md:w-auto px-6 py-3 bg-black border-black text-white fill-white active:scale-95 duration-100 border will-change-transform overflow-hidden relative rounded-xl transition-all">
-              <div class="flex items-center transition-all opacity-1">
-                  <span class="text-sm font-semibold whitespace-nowrap truncate mx-auto">Search</span>
-              </div>
-          </button>
-      </label>
-  </form>
-
-  <!-- Hasil Pencarian -->
-  <h2 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Hasil Pencarian</h2>
-  <table>
-      <tr>
-          <th>Judul</th>
-          <th>Sinopsis</th>
-          <th>Trailer</th>
-          <th>Tanggal Rilis</th>
-          <th>Total View</th>
-          <th>Aksi</th>
-      </tr>
-      <!-- Hardcoded data untuk hasil pencarian -->
-      <tr>
-          <td>Hasil Pencarian 1</td>
-          <td>Deskripsi singkat 1</td>
-          <td><a href="https://www.youtube.com/watch?v=ft70sAYrFyY">Trailer</a></td>
-          <td>Tanggal Rilis 1</td>
-          <td>Total View 1</td>
-          <td><a href="{% url 'tayangan:detail-film' %}">Halaman Tayangan</a></td>
-      </tr>
-      <!-- tambahkan baris data lainnya sesuai kebutuhan -->
-  </table>
+  <form action="{% url 'tayangan:search' %}" method="get">
+    <label for="search-bar" class="mx-auto mt-8 relative bg-white min-w-sm max-w-2xl flex flex-col md:flex-row items-center justify-center border py-2 px-2 rounded-2xl gap-2 shadow-2xl focus-within:border-gray-300">
+        <input id="search-bar" placeholder="your keyword here" name="q" class="px-6 py-2 w-full rounded-md flex-1 outline-none bg-white" required="">
+        <button type="submit" class="w-full md:w-auto px-6 py-3 bg-black border-black text-white fill-white active:scale-95 duration-100 border will-change-transform overflow-hidden relative rounded-xl transition-all">
+            <div class="flex items-center transition-all opacity-1">
+                <span class="text-sm font-semibold whitespace-nowrap truncate mx-auto">Search</span>
+            </div>
+        </button>
+    </label>
+</form>
 
   <!-- 10 Tayangan Terbaik Minggu Ini -->
-  <h2 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">10 Tayangan Terbaik Minggu Ini</h2>
-  <form method="get">
-    <button type="submit" name="country" value="global">Top 10 Global</button>
-    <button type="submit" name="country" value="local">Top 10 Negara Pengguna</button>
-  </form>
-  <table>
+  <ul class="flex gap-3 my-8 md:my-12 flex-wrap justify-center px-4 md:px-8 max-w-sm">
+    <li
+    class="px-2 py-1 md:text-lg relative bg-gray-100 rounded-lg select-none hover:shadow hover:shadow-teal-500 hover:outline hover:outline-teal-600">
+    <a href="{% url 'trailer:show-trailers' %}">
+      Top 10 Global
+    </a>
+  </li>
+  <li
+  class="px-2 py-1 md:text-lg relative bg-gray-100 rounded-lg select-none hover:shadow hover:shadow-teal-500 hover:outline hover:outline-teal-600">
+  <a href="top-indonesia/">
+    Top 10 Indonesia
+  </a>
+</li>
+</ul>
+<h2 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">10 Tayangan Terbaik Minggu Ini</h2>
+<table class="table table-hover">
     <tr>
       <th>Peringkat</th>
       <th>Judul</th>
@@ -105,51 +56,21 @@
       <th>Tanggal Rilis</th>
       <th>Total View 7 Hari Terakhir</th>
     </tr>
-    <!-- Hardcoded data entries -->
+    <!-- For loop untuk trailers -->
+    {% for trailer in trailers %}
     <tr>
-      <td>1</td>
-      <td>The Great Adventure</td>
-      <td>An epic journey through uncharted lands.</td>
-      <td><a href="https://youtu.be/ft70sAYrFyY">Watch Trailer</a></td>
-      <td>2024-01-01</td>
-      <td>12000</td>
+      <td>{{ forloop.counter }}</td>
+      <td>{{ trailer.judul }}</td>
+      <td>{{ trailer.sinopsis }}</td>
+      <td><a href="{{ trailer.trailer_url }}">Watch Trailer</a></td>
+      <td>{{ trailer.tanggal_rilis }}</td>
+      <td>{{ trailer.total_view }}</td>
     </tr>
-    <tr>
-      <td>2</td>
-      <td>Mystery of the Depths</td>
-      <td>Exploring the secrets beneath the ocean.</td>
-      <td><a href="https://youtu.be/ft70sAYrFyY">Watch Trailer</a></td>
-      <td>2024-02-15</td>
-      <td>9500</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>Lost in Time</td>
-      <td>A journey back to the age of dinosaurs.</td>
-      <td><a href="https://youtu.be/ft70sAYrFyY">Watch Trailer</a></td>
-      <td>2024-03-22</td>
-      <td>11000</td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td>Sky High</td>
-      <td>The thrill of flight and the beauty of the sky.</td>
-      <td><a href="https://youtu.be/ft70sAYrFyY">Watch Trailer</a></td>
-      <td>2024-04-18</td>
-      <td>10500</td>
-    </tr>
-    <tr>
-      <td>5</td>
-      <td>Desert Mirage</td>
-      <td>Survival and mirages in the vast desert.</td>
-      <td><a href="https://youtu.be/ft70sAYrFyY">Watch Trailer</a></td>
-      <td>2024-05-05</td>
-      <td>9000</td>
-    </tr>
+    {% endfor %}
   </table>
   <!-- FILM -->
   <h2 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Film</h2>
-  <table>
+  <table class="table table-hover">
     <tr>
       <th>Judul</th>
       <th>Sinopsis</th>
@@ -157,33 +78,20 @@
       <th>Tanggal Rilis</th>
       <th>Total View 7 Hari Terakhir</th>
     </tr>
-    <!-- Hardcoded data entries -->
+    <!-- For loop untuk film -->
+    {% for movie in film %}
     <tr>
-      <td>The Great Adventure</td>
-      <td>An epic journey through uncharted lands.</td>
-      <td><a href="https://youtu.be/ft70sAYrFyY">Watch Trailer</a></td>
-      <td>2024-01-01</td>
-      <td>12000</td>
+      <td>{{ movie.judul }}</td>
+      <td>{{ movie.sinopsis }}</td>
+      <td><a href="{{ movie.trailer_url }}">Watch Trailer</a></td>
+      <td>{{ movie.tanggal_rilis }}</td>
+      <td>{{ movie.total_view }}</td>
     </tr>
-    <tr>
-      <td>Mystery of the Depths</td>
-      <td>Exploring the secrets beneath the ocean.</td>
-      <td><a href="https://youtu.be/ft70sAYrFyY">Watch Trailer</a></td>
-      <td>2024-02-15</td>
-      <td>9500</td>
-    </tr>
-    <tr>
-      <td>Lost in Time</td>
-      <td>A journey back to the age of dinosaurs.</td>
-      <td><a href="https://youtu.be/ft70sAYrFyY">Watch Trailer</a></td>
-      <td>2024-03-22</td>
-      <td>11000</td>
-    </tr>
-    </tr>
+    {% endfor %}
   </table>
   <!-- SERIES -->
   <h2 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Series</h2>
-  <table>
+  <table class="table table-hover">
     <tr>
       <th>Judul</th>
       <th>Sinopsis</th>
@@ -191,21 +99,16 @@
       <th>Tanggal Rilis</th>
       <th>Total View 7 Hari Terakhir</th>
     </tr>
-    <!-- Hardcoded data entries -->
+    <!-- For loop untuk series -->
+    {% for series_episode in series %}
     <tr>
-      <td>Sky High</td>
-      <td>The thrill of flight and the beauty of the sky.</td>
-      <td><a href="https://youtu.be/ft70sAYrFyY">Watch Trailer</a></td>
-      <td>2024-04-18</td>
-      <td>10500</td>
+      <td>{{ series_episode.judul }}</td>
+      <td>{{ series_episode.sinopsis }}</td>
+      <td><a href="{{ series_episode.trailer_url }}">Watch Trailer</a></td>
+      <td>{{ series_episode.tanggal_rilis }}</td>
+      <td>{{ series_episode.total_view }}</td>
     </tr>
-    <tr>
-      <td>Desert Mirage</td>
-      <td>Survival and mirages in the vast desert.</td>
-      <td><a href="https://youtu.be/ft70sAYrFyY">Watch Trailer</a></td>
-      <td>2024-05-05</td>
-      <td>9000</td>
-    </tr>
+    {% endfor %}
   </table>
 
 {% endblock %}

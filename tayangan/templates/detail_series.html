@@ -19,9 +19,10 @@
 {% block content %}
 <body>
     <div class="container">
-        <h1 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl text-netflix">Judul Series Bagus</h1>
-        
-        <div class="flex justify-center gap-2">
+        <h1 class="mx-auto max-w-2xl text-4xl font-bold tracking-tight text-gray-900 sm:text-4xl text-netflix">Series Details</h1>
+        <h2 class="mx-auto max-w-2xl text-7xl font-medium tracking-tight text-gray-900 sm:text-7xl">Summer Strike</h2>
+
+        <div class="flex justify-center gap-2 my-4">
             <a href="{% url 'tayangan:episode' %}" class="rounded-md bg-gradient-to-r from-netflix to-darker px-6 py-3 text-white hover:from-darker hover:to-darker">
                 Episode 1
             </a>
@@ -33,37 +34,54 @@
             </a>
         </div>
 
-
-        <div class="flex flex-col items-center justify-center gap-5 mt-6 md:flex-row">
-
-            <a class="inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all bg-gray-700 dark:bg-white dark:text-gray-800 rounded-md shadow-xl sm:w-auto hover:bg-gray-900 hover:text-white shadow-neutral-300 dark:shadow-neutral-700 hover:shadow-2xl hover:shadow-neutral-400 hover:-tranneutral-y-px" href="">
-            Download Film
-            </a>
-            <a class="inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all bg-gray-700 dark:bg-white dark:text-gray-800 rounded-md shadow-xl sm:w-auto hover:bg-gray-900 hover:text-white shadow-neutral-300 dark:shadow-neutral-700 hover:shadow-2xl hover:shadow-neutral-400 hover:-tranneutral-y-px" href="">
-            Add to Favorite
-            </a>
-        </div>
-
-        <p><strong>Total View:</strong> Total View Tayangan</p>
-        <p><strong>Rating Rata-Rata:</strong> Rating Tayangan</p>
-        <p><strong>Sinopsis:</strong> Sinopsis tayangan pencarian</p>
-        <p><strong>Durasi Film:</strong> 90 menit</p>
-        <p><strong>Tanggal Rilis:</strong> Tanggal Rilis Tayangan</p>
-        <a href="#">URL FILM</a>
-        <p><strong>Genre:</strong> Genre 1, Genre 2</p>
-        <p><strong>Asal Negara:</strong> Indonesia</p>
-
-        <p><strong>Pemain:</strong> Pemain 1, Pemain 2</p>
-        <p><strong>Penulis:</strong> Penulis Tayangan</p>
-        
-        <p><strong>Sutradara:</strong> Sutradara Tayangan</p>
+        <table class="table table-hover mt-6">
+            <tbody>
+                <tr>
+                    <td><strong>Total View</strong></td>
+                    <td>Total View Tayangan</td>
+                </tr>
+                <tr>
+                    <td><strong>Rating Rata-Rata</strong></td>
+                    <td>Rating Tayangan</td>
+                </tr>
+                <tr>
+                    <td><strong>Sinopsis</strong></td>
+                    <td>Sinopsis tayangan pencarian</td>
+                </tr>
+                <tr>
+                    <td><strong>Durasi Film</strong></td>
+                    <td>90 menit</td>
+                </tr>
+                <tr>
+                    <td><strong>Tanggal Rilis</strong></td>
+                    <td>Tanggal Rilis Tayangan</td>
+                </tr>
+                <tr>
+                    <td><strong>Genre</strong></td>
+                    <td>Genre 1, Genre 2</td>
+                </tr>
+                <tr>
+                    <td><strong>Asal Negara</strong></td>
+                    <td>Indonesia</td>
+                </tr>
+                <tr>
+                    <td><strong>Pemain</strong></td>
+                    <td>Pemain 1, Pemain 2</td>
+                </tr>
+                <tr>
+                    <td><strong>Penulis</strong></td>
+                    <td>Penulis Tayangan</td>
+                </tr>
+                <tr>
+                    <td><strong>Sutradara</strong></td>
+                    <td>Sutradara Tayangan</td>
+                </tr>
+            </tbody>
+        </table>
 
         <a class="inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all rounded-md shadow-xl sm:w-auto bg-gradient-to-r from-blue-600 to-blue-500 hover:bg-gradient-to-b dark:shadow-blue-900 shadow-blue-200 hover:shadow-2xl hover:shadow-blue-400 hover:-tranneutral-y-px " href="{% url 'ulasan:show-reviews' %}">
             Lihat Ulasan
         </a>
-
     </div>
 </body>
-</html>
-
 {% endblock %}
