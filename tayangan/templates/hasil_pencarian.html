@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                netflix: '#E50914',
+              }
+            }
+          }
+        }
+    </script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #e8f8ff;
+        }
+
+        a {
+            color: blue;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+{% endblock meta %}
+{% block content %}
+<body>
+    <div class="container">
+        <h1 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl text-netflix">Daftar Tayangan</h1>
+        
+        <!-- Form Pencarian -->
+        <form action="" method="get">
+            <label for="search-bar" class="mx-auto mt-8 relative bg-white min-w-sm max-w-2xl flex flex-col md:flex-row items-center justify-center border py-2 px-2 rounded-2xl gap-2 shadow-2xl focus-within:border-gray-300">
+                <input id="search-bar" placeholder="your keyword here" name="q" class="px-6 py-2 w-full rounded-md flex-1 outline-none bg-white" required="">
+                <button type="submit" class="w-full md:w-auto px-6 py-3 bg-black border-black text-white fill-white active:scale-95 duration-100 border will-change-transform overflow-hidden relative rounded-xl transition-all">
+                    <div class="flex items-center transition-all opacity-1">
+                        <span class="text-sm font-semibold whitespace-nowrap truncate mx-auto">Search</span>
+                    </div>
+                </button>
+            </label>
+        </form>
+
+        <!-- Hasil Pencarian -->
+        <h2 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Hasil Pencarian</h2>
+        <table>
+            <tr>
+                <th>Judul</th>
+                <th>Sinopsis</th>
+                <th>Trailer</th>
+                <th>Tanggal Rilis</th>
+                <th>Total View</th>
+                <th>Tayangan</th>
+            </tr>
+            <!-- Hardcoded data untuk hasil pencarian -->
+            <tr>
+                <td>Hasil Pencarian 1</td>
+                <td>Deskripsi singkat 1</td>
+                <td><a href="https://www.youtube.com/watch?v=ft70sAYrFyY">Trailer</a></td>
+                <td>Tanggal Rilis 1</td>
+                <td>Total View 1</td>
+                <td><a href="{% url 'tayangan:detail-film' %}">Halaman Tayangan</a></td>
+            </tr>
+            <!-- tambahkan baris data lainnya sesuai kebutuhan -->
+        </table>
+
+    </div>
+{% endblock content %}

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+          theme: {
+              extend: {
+              colors: {
+                netflix: '#E50914',
+                darker: '#B20710',
+              }
+            }
+        }
+    }
+    </script>
+{% endblock meta %}
+
+{% block content %}
+<body>
+    <div class="container">
+        <h1 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl text-netflix">Judul Series Bagus</h1>
+        
+        <div class="flex justify-center gap-2">
+            <a href="{% url 'tayangan:episode' %}" class="rounded-md bg-gradient-to-r from-netflix to-darker px-6 py-3 text-white hover:from-darker hover:to-darker">
+                Episode 1
+            </a>
+            <a href="{% url 'tayangan:episode' %}" class="rounded-md bg-gradient-to-r from-netflix to-darker px-6 py-3 text-white hover:from-darker hover:to-darker">
+                Episode 2
+            </a>
+            <a href="{% url 'tayangan:episode' %}" class="rounded-md bg-gradient-to-r from-netflix to-darker px-6 py-3 text-white hover:from-darker hover:to-darker">
+                Episode 3
+            </a>
+        </div>
+
+
+        <div class="flex flex-col items-center justify-center gap-5 mt-6 md:flex-row">
+
+            <a class="inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all bg-gray-700 dark:bg-white dark:text-gray-800 rounded-md shadow-xl sm:w-auto hover:bg-gray-900 hover:text-white shadow-neutral-300 dark:shadow-neutral-700 hover:shadow-2xl hover:shadow-neutral-400 hover:-tranneutral-y-px" href="">
+            Download Film
+            </a>
+            <a class="inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all bg-gray-700 dark:bg-white dark:text-gray-800 rounded-md shadow-xl sm:w-auto hover:bg-gray-900 hover:text-white shadow-neutral-300 dark:shadow-neutral-700 hover:shadow-2xl hover:shadow-neutral-400 hover:-tranneutral-y-px" href="">
+            Add to Favorite
+            </a>
+        </div>
+
+        <p><strong>Total View:</strong> Total View Tayangan</p>
+        <p><strong>Rating Rata-Rata:</strong> Rating Tayangan</p>
+        <p><strong>Sinopsis:</strong> Sinopsis tayangan pencarian</p>
+        <p><strong>Durasi Film:</strong> 90 menit</p>
+        <p><strong>Tanggal Rilis:</strong> Tanggal Rilis Tayangan</p>
+        <a href="#">URL FILM</a>
+        <p><strong>Genre:</strong> Genre 1, Genre 2</p>
+        <p><strong>Asal Negara:</strong> Indonesia</p>
+
+        <p><strong>Pemain:</strong> Pemain 1, Pemain 2</p>
+        <p><strong>Penulis:</strong> Penulis Tayangan</p>
+        
+        <p><strong>Sutradara:</strong> Sutradara Tayangan</p>
+
+        <a class="inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all rounded-md shadow-xl sm:w-auto bg-gradient-to-r from-blue-600 to-blue-500 hover:bg-gradient-to-b dark:shadow-blue-900 shadow-blue-200 hover:shadow-2xl hover:shadow-blue-400 hover:-tranneutral-y-px " href="{% url 'ulasan:show-reviews' %}">
+            Lihat Ulasan
+        </a>
+
+    </div>
+</body>
+</html>
+
+{% endblock %}
