@@ -14,5 +14,5 @@ class RegisterForm(UserCreationForm):
         user = super().save(commit=False)
         if commit:
             user.save()
-            profile = Profile.objects.create(user=user, country=self.cleaned_data['negara_asal'])
+            profile = Profile.objects.create(user=user, negara_asal=self.cleaned_data['negara_asal'])
         return user
