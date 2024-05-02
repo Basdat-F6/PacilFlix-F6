@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+          theme: {
+              extend: {
+              colors: {
+                netflix: '#E50914',
+                darker: '#B20710',
+              }
+            }
+        }
+    }
+    </script>
+{% endblock meta %}
+
+{% block content %}
+{% include 'navbar.html' %}
+    <div class="container my-12">
+        <h1 class="mx-auto max-w-2xl text-4xl font-bold tracking-tight text-gray-900 sm:text-4xl text-netflix">Series Details</h1>
+        <h2 class="mx-auto max-w-2xl text-7xl font-medium tracking-tight text-gray-900 sm:text-7xl">Summer Strike</h2>
+
+        <div class="flex justify-center gap-2 my-4">
+            <a href="{% url 'tayangan:episode' %}" class="no-underline bg-gradient-to-r from-netflix to-darker px-6 py-3 text-white hover:from-darker hover:to-darker">
+                Episode 1
+            </a>
+            <a href="{% url 'tayangan:episode' %}" class="no-underline bg-gradient-to-r from-netflix to-darker px-6 py-3 text-white hover:from-darker hover:to-darker">
+                Episode 2
+            </a>
+            <a href="{% url 'tayangan:episode' %}" class="no-underline bg-gradient-to-r from-netflix to-darker px-6 py-3 text-white hover:from-darker hover:to-darker">
+                Episode 3
+            </a>
+        </div>
+
+        <table class="table table-hover mt-6">
+            <tbody>
+                <tr>
+                    <td><strong>Total View</strong></td>
+                    <td>Total View Tayangan</td>
+                </tr>
+                <tr>
+                    <td><strong>Rating Rata-Rata</strong></td>
+                    <td>Rating Tayangan</td>
+                </tr>
+                <tr>
+                    <td><strong>Sinopsis</strong></td>
+                    <td>Sinopsis tayangan pencarian</td>
+                </tr>
+                <tr>
+                    <td><strong>Durasi Film</strong></td>
+                    <td>90 menit</td>
+                </tr>
+                <tr>
+                    <td><strong>Tanggal Rilis</strong></td>
+                    <td>Tanggal Rilis Tayangan</td>
+                </tr>
+                <tr>
+                    <td><strong>Genre</strong></td>
+                    <td>Genre 1, Genre 2</td>
+                </tr>
+                <tr>
+                    <td><strong>Asal Negara</strong></td>
+                    <td>Indonesia</td>
+                </tr>
+                <tr>
+                    <td><strong>Pemain</strong></td>
+                    <td>Pemain 1, Pemain 2</td>
+                </tr>
+                <tr>
+                    <td><strong>Penulis</strong></td>
+                    <td>Penulis Tayangan</td>
+                </tr>
+                <tr>
+                    <td><strong>Sutradara</strong></td>
+                    <td>Sutradara Tayangan</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <a class="no-underline inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all rounded-md shadow-xl sm:w-auto bg-gradient-to-r from-netflix to-darker hover:bg-gradient-to-b dark:shadow-blue-900 shadow-netflix-darker hover:shadow-2xl hover:shadow-netflix hover:-tranneutral-y-px " href="{% url 'ulasan:show-reviews' %}">
+            Lihat Ulasan
+        </a>
+
+    </div>
+</body>
+{% endblock %}
