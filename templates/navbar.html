@@ -8,16 +8,16 @@
         </a>
 
         <ul class="nav nav-underline">
-          {% if user.is_authenticated %}
+          {% if username_cookie %}
           <li class="nav-item">
-            <a class="nav-link" style="color: #E50914;" href="#">Halo, {{ user.username }}</a>
+            <a class="nav-link" style="color: #E50914;" href="#">Halo, {{ username_cookie }}</a>
           </li>
           {% endif %}
           <li class="nav-item">
             <a class="nav-link" style="color: #E50914;" href="{% url 'trailer:show-trailers' %}">Trailer Tayangan</a>
           </li>
 
-          {% if user.is_authenticated %}
+          {% if username_cookie %}
           <li class="nav-item">
             <a class="nav-link" style="color: #E50914;" href="{% url 'tayangan:watch' %}">Daftar Tayangan</a>
           </li>

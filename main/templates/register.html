@@ -36,28 +36,42 @@
 {% block content %}  
 
 {% include 'navbar.html' %}
-<div class="center-container" style="padding-top: 80px;"> 
+<div class="center-container">
     <div class="register">
-        <h1 class="staatliches-regular">Register</h1>  
+        <h1 class="staatliches-regular">Register</h1>
+        <form method="POST" action="">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>Username: </td>
+                    <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
+                </tr>
+                        
+                <tr>
+                    <td>Password: </td>
+                    <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
+                </tr>
 
-        <form method="POST" >  
-            {% csrf_token %}  
-            <table>  
-                {{ form.as_table }}  
-                <tr>  
+                <tr>
+                    <td>Negara Asal: </td>
+                    <td><input type="text" name="negara_asal" placeholder="Negara Asal" class="form-control"></td>
+                </tr>
+
+                <tr>
                     <td></td>
-                    <td><input class="btn btn-danger" type="submit" name="submit" value="Daftar"/></td>  
-                </tr>  
-            </table>  
+                    <td><input class="btn btn-danger" type="submit" value="Register" style="width: 100px;"></td>
+                </tr>
+            </table>
         </form>
 
-    {% if messages %}  
-        <ul>   
-            {% for message in messages %}  
-                <li>{{ message }}</li>  
-                {% endfor %}  
-        </ul>   
-    {% endif %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}     
+            
     </div>
 </div>
 
