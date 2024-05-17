@@ -23,17 +23,26 @@ def register(request):
         password = request.POST.get('password')
         negara_asal = request.POST.get('negara_asal')
 
-        # Check if all fileds are filled
+        # Check if all fields are filled
         if username and password and negara_asal:
-            try:
-                cursor.execute(f'INSERT INTO "PENGGUNA" VALUES (\'{username}\', \'{password}\',\'{negara_asal}\')')
-                connection.commit()
-                return redirect('main:login_user')
-            
-            except Exception as error:
-                connection.rollback()
-                error_message = str(error).split('CONTEXT')[0]
-                messages.error(request, error_message)
+            connection, cursor = get_db_connection()
+            if connection is None or cursor is None:
+                messages.error(request, 'Database connection failed')
+            else:
+                try:
+                    cursor.execute(
+                        'INSERT INTO "PENGGUNA" (username, password, negara_asal) VALUES (%s, %s, %s)',
+                        (username, password, negara_asal)
+                    )
+                    connection.commit()
+                    return redirect('main:login_user')
+                except Exception as error:
+                    connection.rollback()
+                    error_message = str(error).split('CONTEXT')[0]
+                    messages.error(request, error_message)
+                finally:
+                    cursor.close()
+                    connection.close()
         else:
             messages.error(request, 'Semua field harus diisi')
     
@@ -50,16 +59,27 @@ def login_user(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        cursor.execute('SELECT * FROM "PENGGUNA" WHERE "username" = %s AND "password" = %s', (username, password))
-        user = cursor.fetchall()
-        if len(user) == 0:
-            error_message = "Username atau password salah"
-            messages.error(request, error_message)
-            return redirect('main:login_user')
+        connection, cursor = get_db_connection()
+        if connection is None or cursor is None:
+            messages.error(request, 'Database connection failed')
         else:
-            response = HttpResponseRedirect(reverse('tayangan:watch'))
-            response.set_cookie('username', username)
-            return response
+            try:
+                cursor.execute('SELECT * FROM "PENGGUNA" WHERE username = %s AND password = %s', (username, password))
+                user = cursor.fetchall()
+                if len(user) == 0:
+                    error_message = "Username atau password salah"
+                    messages.error(request, error_message)
+                    return redirect('main:login_user')
+                else:
+                    response = HttpResponseRedirect(reverse('tayangan:watch'))
+                    response.set_cookie('username', username)
+                    return response
+            except Exception as error:
+                error_message = str(error).split('CONTEXT')[0]
+                messages.error(request, error_message)
+            finally:
+                cursor.close()
+                connection.close()
 
     return render(request, 'login.html')
 
