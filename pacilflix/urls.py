@@ -21,5 +21,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
     path('', include('daftar_favorit.urls')),
-    path('', include('daftar_unduhan.urls')),
+    path('', include('daftar_unduhan.urls')),,
+    path('trailers/', include('trailer.urls')),
+    path('watch/', include('tayangan.urls')),
+    path('reviews/', include('ulasan.urls')),
+    path('daftar_kontributor', include('daftar_kontributor.urls')),
+    path('langganan', include('langganan.urls')),
 ]
