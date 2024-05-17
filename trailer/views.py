@@ -11,21 +11,22 @@ def map_cursor(cursor):
     query_result = namedtuple("Data", [col[0] for col in description])
     return [query_result(*row) for row in cursor.fetchall()]
 
-def query(query_str: str):
+def query(query_str: str, params=None):
     result = []
     with connection.cursor() as cursor:
         try:
-            cursor.execute(query_str)
+            if params:
+                cursor.execute(query_str, params)
+            else:
+                cursor.execute(query_str)
             if query_str.strip().lower().startswith("select"):
-                # Return hasil SELECT
                 result = map_cursor(cursor)
             else:
-                # Return jumlah row yang termodifikasi oleh INSERT, UPDATE, DELETE (int)
                 result = cursor.rowcount
         except Exception as e:
-            # Return exception message
             result = str(e)
     return result
+
 
 def show_trailers(request):
     set_search_path()  # Set search_path ke skema 'pacilflix'
@@ -60,7 +61,9 @@ def show_trailers(request):
         """
     )
 
+    username_cookie = request.COOKIES.get('username')
     context = {
+        "username_cookie": username_cookie,
         "trailers": trailers if isinstance(trailers, list) else [],
         "film": film if isinstance(film, list) else [],
         "series": series if isinstance(series, list) else [],
@@ -68,6 +71,26 @@ def show_trailers(request):
     }
 
     return render(request, "trailer_list.html", context)
+
+def search(request):
+    set_search_path()
+    query_str = request.GET.get("q", "")
+    results = query(
+        """
+        SELECT id, judul, sinopsis_trailer as sinopsis, url_video_trailer, release_date_trailer
+        FROM "TAYANGAN"
+        WHERE judul ILIKE %s
+        """, [f"%{query_str}%"]
+    )
+    
+    username_cookie = request.COOKIES.get('username')
+    context = {
+        "username_cookie": username_cookie,
+        "results": results if isinstance(results, list) else [],
+        "error": results if not isinstance(results, list) else None,
+    }
+    return render(request, "hasil_pencarian.html", context)
+
 
 def show_top_indo(request):
     set_search_path()  # Set search_path ke skema 'pacilflix'
@@ -96,7 +119,9 @@ def show_top_indo(request):
         """
     )
 
+    username_cookie = request.COOKIES.get('username')
     context = {
+        "username_cookie": username_cookie,
         "trailers": top_indonesia if isinstance(top_indonesia, list) else [],
         "error": top_indonesia if not isinstance(top_indonesia, list) else None,
     }
@@ -138,7 +163,9 @@ def show_top_global(request):
         """
     )
 
+    username_cookie = request.COOKIES.get('username')
     context = {
+        "username_cookie": username_cookie,
         "trailers": top_global if isinstance(top_global, list) else [],
         "film": film if isinstance(film, list) else [],
         "series": series if isinstance(series, list) else [],

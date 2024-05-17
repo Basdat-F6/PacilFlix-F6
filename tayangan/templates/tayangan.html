@@ -45,6 +45,7 @@
             </ul>
         </div>
 
+        {% if username_cookie %}
         <!-- 10 Tayangan Terbaik Minggu Ini -->
         <h2 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">10 Tayangan Terbaik Minggu Ini</h2>
         <table class="table table-hover">
@@ -66,8 +67,13 @@
                     <td><a href="{{ tayangan.url_video_trailer }}">Trailer</a></td>
                     <td>{{ tayangan.release_date_trailer }}</td>
                     <td>{{ tayangan.total_view }}</td>
-                    <td><a href="{% url 'tayangan:detail-film' tayangan.id %}">Halaman Tayangan</a></td>
-
+                    <td>
+                        {% if tayangan.tayangan_type == 'film' %}
+                        <a href="{% url 'tayangan:detail-film' tayangan.id %}">Halaman Tayangan</a>
+                        {% else %}
+                        <a href="{% url 'tayangan:detail-series' tayangan.id %}">Halaman Tayangan</a>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -82,7 +88,6 @@
                     <th>Sinopsis</th>
                     <th>Trailer</th>
                     <th>Tanggal Rilis</th>
-                    <th>Total View</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -95,7 +100,6 @@
                     <td>{{ film.release_date_trailer }}</td>
                     <td>{{ film.total_view }}</td>
                     <td><a href="{% url 'tayangan:detail-film' film.id %}">Halaman Tayangan</a></td>
-                   
                 </tr>
                 {% endfor %}
             </tbody>
@@ -110,7 +114,6 @@
                     <th>Sinopsis</th>
                     <th>Trailer</th>
                     <th>Tanggal Rilis</th>
-                    <th>Total View</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -123,10 +126,12 @@
                     <td>{{ series.release_date_trailer }}</td>
                     <td>{{ series.total_view }}</td>
                     <td><a href="{% url 'tayangan:detail-series' series.id %}">Halaman Tayangan</a></td>
-           
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        {% else %}
+        <p class="text-center text-lg text-gray-700">Please log in to view the content.</p>
+        {% endif %}
     </div> 
 {% endblock content %}

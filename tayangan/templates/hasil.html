@@ -32,6 +32,7 @@
             </label>
         </form>
 
+        {% if username_cookie %}
         <!-- Hasil Pencarian -->
         <h2 class="mx-auto mt-12 max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Hasil Pencarian</h2>
         <table class="table table-hover">
@@ -51,14 +52,13 @@
                     <td>{{ result.sinopsis }}</td>
                     <td><a href="{{ result.url_video_trailer }}">Trailer</a></td>
                     <td>{{ result.release_date_trailer }}</td>
-                    {% if user.is_authenticated %}
-                        <td><a href="{% url 'tayangan:detail-film' result.id %}">Halaman Tayangan</a></td>
-                    {% else %}
-                        <td>Login untuk menonton tayangan</td>
-                    {% endif %}
+                    <td><a href="{% url 'tayangan:detail-film' result.id %}">Halaman Tayangan</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        {% else %}
+        <p class="text-center text-lg text-gray-700">Please log in to view the search results.</p>
+        {% endif %}
     </div>
 {% endblock content %}

@@ -1,30 +1,12 @@
-import datetime
+from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.utils import timezone
 from django.db import connection
 from django.contrib.auth.decorators import login_required
 from collections import namedtuple
 
-from django.shortcuts import render
-from django.http import HttpResponse
 
-# Data ulasan hardcoded
-reviews = [
-    {'username': 'user1', 'description': 'Great movie!', 'rating': 5},
-    {'username': 'user2', 'description': 'Pretty good.', 'rating': 4},
-    {'username': 'user3', 'description': 'Not bad, but could be better.', 'rating': 3},
-]
 
-def review_page(request):
-    if request.method == 'POST':
-        # Menambah ulasan baru
-        username = 'user_example'  # Contoh username
-        description = request.POST.get('description')
-        rating = request.POST.get('rating')
-        reviews.insert(0, {'username': username, 'description': description, 'rating': rating})
-    
-    return render(request, 'ulasan.html', {'reviews': reviews})
 
 def set_search_path():
     with connection.cursor() as cursor:
@@ -76,36 +58,37 @@ def show_reviews(request, id_tayangan):
         """, [id_tayangan]
     )
 
+    username_cookie = request.COOKIES.get('username')
     context = {
+        'username_cookie': username_cookie,
         "tayangan": tayangan[0],
         "reviews": reviews if isinstance(reviews, list) else [],
-        "error": reviews if not isinstance(reviews, list) else None,
+        "error_message": reviews if not isinstance(reviews, list) else None,
     }
     print(context)
 
     return render(request, "ulasan.html", context)
 
-@login_required
+
 def add_review(request, id_tayangan):
     set_search_path()
+
+    username_cookie = request.COOKIES.get('username')
+
 
     if request.method == "POST":
         rating = request.POST.get('rating')
         description = request.POST.get('description')
-        username = request.user.username
-        timestamp = datetime.now()
+        timestamp = timezone.now()
 
-        # Menambahkan ulasan baru
-        query(
+        error_message = query(
             """
             INSERT INTO "ULASAN" (id_tayangan, username, timestamp, rating, deskripsi)
             VALUES (%s, %s, %s, %s, %s)
-            """, [id_tayangan, username, timestamp, rating, description]
+            """, [id_tayangan, username_cookie, timestamp, rating, description]
         )
-
-        print("berhasil")
-
-        return redirect('add-review', id_tayangan=id_tayangan)
+        print(error_message)
+        return redirect('ulasan:show-review', id_tayangan=id_tayangan)
 
     # Ambil detail tayangan
     tayangan = query(
@@ -130,9 +113,10 @@ def add_review(request, id_tayangan):
     )
 
     context = {
+        'username_cookie': username_cookie,
         "tayangan": tayangan[0],
         "reviews": reviews if isinstance(reviews, list) else [],
-        "error": reviews if not isinstance(reviews, list) else None,
+        "error_message": error_message,
     }
 
     print('OKE TERKIRIM', context)

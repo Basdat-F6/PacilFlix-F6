@@ -24,8 +24,7 @@
 
         <div class="flex justify-center gap-2 my-4">
             {% for episode in episodes %}
-
-                <a href="{% url 'tayangan:episode' episode.id_series %}" class="no-underline bg-gradient-to-r from-netflix to-darker px-6 py-3 text-white hover:from-darker hover:to-darker">
+                <a href="{% url 'tayangan:detail-episode' id_series=episode.id_series sub_judul=episode.sub_judul %}" class="no-underline bg-gradient-to-r from-netflix to-darker px-6 py-3 text-white hover:from-darker hover:to-darker">
                     <div>
                         <p>Episode {{ forloop.counter }}</p>
                     </div>
