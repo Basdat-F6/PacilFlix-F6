@@ -32,10 +32,15 @@
                         <button type="submit" class="no-underline inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all rounded-md shadow-xl sm:w-auto bg-gradient-to-r from-netflix to-blue-500 hover:bg-gradient-to-b dark:shadow-blue-900 shadow-blue-200 hover:shadow-2xl hover:shadow-blue-400 hover:-tranneutral-y-px">
                             Watch Now
                         </button>
+                        <a class="no-underline inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all bg-gray-700 dark:bg-white dark:text-gray-800 rounded-md shadow-xl sm:w-auto hover:bg-gray-900 hover:text-white shadow-neutral-300 dark:shadow-neutral-700 hover:shadow-2xl hover:shadow-neutral-400 hover:-tranneutral-y-px" href="" data-toggle="modal" data-target="#unduhTayanganModal">
+                            Download Film
+                        </a>
+                        <a class="no-underline inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all bg-gray-700 dark:bg-white dark:text-gray-800 rounded-md shadow-xl sm:w-auto hover:bg-gray-900 hover:text-white shadow-neutral-300 dark:shadow-neutral-700 hover:shadow-2xl hover:shadow-neutral-400 hover:-tranneutral-y-px" href="" data-toggle="modal" data-target="#tambahFavoritModal">
+                            Add to Favorite
+                        </a>
                     </div>
                 </form>
             {% else %}
-                
                 <p class="text-center text-lg text-gray-700">This movie will be available on {{ detail.release_date_trailer }}.</p>
             {% endif %}
 
@@ -46,6 +51,7 @@
                     <p>Ended at: {{ progress.end_date_time }}</p>
                 </div>
             {% endif %}
+
         {% else %}
             <p class="text-center text-lg text-gray-700">Please log in to view the movie details.</p>
         {% endif %}
@@ -58,7 +64,7 @@
                 </tr>
                 <tr>
                     <td><strong>Rating Rata-Rata</strong></td>
-                    <td>{{ detail.rating_rata_rata }}</td>
+                    <td>{{ detail.rating_rata_rata|floatformat:1 }}</td>
                 </tr>
                 <tr>
                     <td><strong>Sinopsis</strong></td>

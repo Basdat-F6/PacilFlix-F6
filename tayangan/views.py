@@ -5,8 +5,6 @@ from collections import namedtuple
 from django.utils import timezone
 from datetime import datetime
 
-
-
 def set_search_path():
     with connection.cursor() as cursor:
         cursor.execute("SET search_path TO 'pacilflix'")
@@ -347,7 +345,6 @@ def watch_episode(request, id_series, sub_judul):
 
     return HttpResponse("Invalid method", status=405)
 
-
 def detail_series(request, id):
     set_search_path()
 
@@ -407,7 +404,6 @@ def detail_series(request, id):
     return render(request, "detail_series.html", context)
 
 
-
 def detail_film(request, id):
     set_search_path()
     
@@ -457,7 +453,6 @@ def detail_film(request, id):
 
     }
     return render(request, "detail_film.html", context)
-
 
 def cek_paket_aktif(request):
     set_search_path()

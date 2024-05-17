@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.db import connection
 from collections import namedtuple
 
+
 def set_search_path():
     with connection.cursor() as cursor:
         cursor.execute("SET search_path TO 'pacilflix'")
@@ -27,6 +28,21 @@ def query(query_str: str, params=None):
             result = str(e)
     return result
 
+str_film = """
+    SELECT T.id, T.judul, T.sinopsis_trailer as sinopsis, T.url_video_trailer as trailer_url, T.release_date_trailer as tanggal_rilis, F.release_date_film
+    FROM "TAYANGAN" T
+    JOIN "FILM" F ON T.id = F.id_tayangan
+    ORDER BY T.judul
+    """
+
+
+str_series = """
+    SELECT T.id, T.judul, T.sinopsis_trailer as sinopsis, T.url_video_trailer as trailer_url, T.release_date_trailer as tanggal_rilis, S.release_date
+    FROM "TAYANGAN" T
+    JOIN "EPISODE" S ON T.id = S.id_series
+    ORDER BY T.judul
+    """
+
 
 def show_trailers(request):
     set_search_path()  # Set search_path ke skema 'pacilflix'
@@ -40,26 +56,8 @@ def show_trailers(request):
         LIMIT 10
         """
     )
-
-    # Ambil data film
-    film = query(
-        """
-        SELECT T.judul, T.sinopsis_trailer as sinopsis, T.url_video_trailer as trailer_url, F.release_date_film as tanggal_rilis
-        FROM "TAYANGAN" T
-        JOIN "FILM" F ON T.id = F.id_tayangan
-        ORDER BY T.judul
-        """
-    )
-
-    # Ambil data series
-    series = query(
-        """
-        SELECT T.judul, T.sinopsis_trailer as sinopsis, T.url_video_trailer as trailer_url, S.release_date as tanggal_rilis
-        FROM "TAYANGAN" T
-        JOIN "EPISODE" S ON T.id = S.id_series
-        ORDER BY T.judul
-        """
-    )
+    film = query(str_film)
+    series = query(str_series)
 
     username_cookie = request.COOKIES.get('username')
     context = {
@@ -123,24 +121,9 @@ def show_top_indo(request):
         LIMIT 10
         """
     )
-    film = query(
-        """
-        SELECT T.id, T.judul, T.sinopsis_trailer as sinopsis, T.url_video_trailer as trailer_url, T.release_date_trailer as tanggal_rilis, F.release_date_film
-        FROM "TAYANGAN" T
-        JOIN "FILM" F ON T.id = F.id_tayangan
-        ORDER BY T.judul
-        """
-    )
 
-    # Ambil data series
-    series = query(
-        """
-        SELECT T.id, T.judul, T.sinopsis_trailer as sinopsis, T.url_video_trailer as trailer_url, T.release_date_trailer as tanggal_rilis, S.release_date
-        FROM "TAYANGAN" T
-        JOIN "EPISODE" S ON T.id = S.id_series
-        ORDER BY T.judul
-        """
-    )
+    film = query(str_film)
+    series = query(str_series)
 
     context = {
         "username_cookie": username_cookie,
@@ -182,24 +165,8 @@ def show_top_global(request):
         LIMIT 10
         """
     )
-    film = query(
-        """
-        SELECT T.id, T.judul, T.sinopsis_trailer as sinopsis, T.url_video_trailer as trailer_url, T.release_date_trailer as tanggal_rilis, F.release_date_film
-        FROM "TAYANGAN" T
-        JOIN "FILM" F ON T.id = F.id_tayangan
-        ORDER BY T.judul
-        """
-    )
-
-    # Ambil data series
-    series = query(
-        """
-        SELECT T.id, T.judul, T.sinopsis_trailer as sinopsis, T.url_video_trailer as trailer_url, T.release_date_trailer as tanggal_rilis, S.release_date
-        FROM "TAYANGAN" T
-        JOIN "EPISODE" S ON T.id = S.id_series
-        ORDER BY T.judul
-        """
-    )
+    film = query(str_film)
+    series = query(str_series)
 
     context = {
         "username_cookie": username_cookie,

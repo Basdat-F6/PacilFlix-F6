@@ -51,6 +51,7 @@
         <table class="table table-hover">
             <thead>
                 <tr>
+                    <th>Peringkat</th>
                     <th>Judul</th>
                     <th>Sinopsis</th>
                     <th>Trailer</th>
@@ -62,6 +63,7 @@
             <tbody>
                 {% for tayangan in tayangan %}
                 <tr>
+                    <td>{{ forloop.counter }}</td>
                     <td>{{ tayangan.judul }}</td>
                     <td>{{ tayangan.sinopsis }}</td>
                     <td><a href="{{ tayangan.url_video_trailer }}">Trailer</a></td>

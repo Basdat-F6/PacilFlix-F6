@@ -2,11 +2,8 @@ from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.db import connection
-from django.contrib.auth.decorators import login_required
 from collections import namedtuple
-
-
-
+from django.contrib import messages  
 
 def set_search_path():
     with connection.cursor() as cursor:
@@ -72,25 +69,22 @@ def show_reviews(request, id_tayangan):
 
 def add_review(request, id_tayangan):
     set_search_path()
-
     username_cookie = request.COOKIES.get('username')
-
-
     if request.method == "POST":
         rating = request.POST.get('rating')
         description = request.POST.get('description')
-        timestamp = timezone.now()
+        timestamp = timezone.now()        
+        with connection.cursor() as cursor:
+            try:
+                cursor.execute("""
+                INSERT INTO "ULASAN" (id_tayangan, username, timestamp, rating, deskripsi)
+                VALUES (%s, %s, %s, %s, %s)
+                """, [id_tayangan, username_cookie, timestamp, rating, description])
+                messages.success(request, "Review added successfully!")
+                return redirect('ulasan:show-review', id_tayangan=id_tayangan)
+            except Exception as e:
+                messages.error(request, str(e))
 
-        error_message = query(
-            """
-            INSERT INTO "ULASAN" (id_tayangan, username, timestamp, rating, deskripsi)
-            VALUES (%s, %s, %s, %s, %s)
-            """, [id_tayangan, username_cookie, timestamp, rating, description]
-        )
-        print(error_message)
-        return redirect('ulasan:show-review', id_tayangan=id_tayangan)
-
-    # Ambil detail tayangan
     tayangan = query(
         """
         SELECT id, judul
@@ -116,7 +110,6 @@ def add_review(request, id_tayangan):
         'username_cookie': username_cookie,
         "tayangan": tayangan[0],
         "reviews": reviews if isinstance(reviews, list) else [],
-        "error_message": error_message,
     }
 
     print('OKE TERKIRIM', context)
