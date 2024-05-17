@@ -1,7 +1,15 @@
 from django.shortcuts import render
 
 def show_langganan(request):
-    return render(request, "langganan.html")
+    username_cookie = request.COOKIES.get('username')
+    context = {
+        'username_cookie': username_cookie
+    }
+    return render(request, "langganan.html", context)
 
 def show_beli(request):
-    return render(request, "beli.html")
+    username_cookie = request.COOKIES.get('username')
+    context = {
+        'username_cookie': username_cookie
+    }
+    return render(request, "beli.html", context)

@@ -52,6 +52,7 @@ def login_user(request):
 
         cursor.execute('SELECT * FROM "PENGGUNA" WHERE "username" = %s AND "password" = %s', (username, password))
         user = cursor.fetchall()
+        print(user)
         if len(user) == 0:
             error_message = "Username atau password salah"
             messages.error(request, error_message)
