@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% include 'navbar.html' %}
 
 {% block meta %}
 <script src="https://cdn.tailwindcss.com"></script>
@@ -18,13 +17,12 @@
 {% endblock meta %}
 
 {% block content %}
-
 {% include 'navbar.html' %}
     <div class="container my-12">
         <h1 class="mx-auto max-w-2xl text-4xl font-bold tracking-tight text-gray-900 sm:text-4xl text-netflix">Movie Details</h1>
-        <h2 class="mx-auto max-w-2xl text-7xl font-medium tracking-tight text-gray-900 sm:text-7xl">The Internships</h2>
+        <h2 class="mx-auto max-w-2xl text-7xl font-medium tracking-tight text-gray-900 sm:text-7xl">{{ detail.judul }}</h2>
         <div class="flex flex-col items-center justify-center gap-5 mt-6 md:flex-row">
-            <a class="no-underline inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all rounded-md shadow-xl sm:w-auto bg-gradient-to-r from-netflix to-blue-500 hover:bg-gradient-to-b dark:shadow-blue-900 shadow-blue-200 hover:shadow-2xl hover:shadow-blue-400 hover:-tranneutral-y-px " href="">
+            <a class="no-underline inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all rounded-md shadow-xl sm:w-auto bg-gradient-to-r from-netflix to-blue-500 hover:bg-gradient-to-b dark:shadow-blue-900 shadow-blue-200 hover:shadow-2xl hover:shadow-blue-400 hover:-tranneutral-y-px " href="{{ detail.url_video }}">
                 Watch Now
             </a>
             <a class="no-underline inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all bg-gray-700 dark:bg-white dark:text-gray-800 rounded-md shadow-xl sm:w-auto hover:bg-gray-900 hover:text-white shadow-neutral-300 dark:shadow-neutral-700 hover:shadow-2xl hover:shadow-neutral-400 hover:-tranneutral-y-px" href="">
@@ -39,52 +37,51 @@
             <tbody>
                 <tr>
                     <td><strong>Total View</strong></td>
-                    <td>Total View Tayangan</td>
+                    <td>{{ detail.total_view }}</td>
                 </tr>
                 <tr>
                     <td><strong>Rating Rata-Rata</strong></td>
-                    <td>Rating Tayangan</td>
+                    <td>{{ detail.rating_rata_rata }}</td>
                 </tr>
                 <tr>
                     <td><strong>Sinopsis</strong></td>
-                    <td>Sinopsis tayangan pencarian</td>
+                    <td>{{ detail.sinopsis }}</td>
                 </tr>
                 <tr>
                     <td><strong>Durasi Film</strong></td>
-                    <td>90 menit</td>
+                    <td>{{ detail.durasi_film }} menit</td>
                 </tr>
                 <tr>
                     <td><strong>Tanggal Rilis</strong></td>
-                    <td>Tanggal Rilis Tayangan</td>
+                    <td>{{ detail.release_date_trailer }}</td>
                 </tr>
                 <tr>
                     <td><strong>Genre</strong></td>
-                    <td>Genre 1, Genre 2</td>
+                    <td>{{ detail.genre }}</td>
                 </tr>
                 <tr>
                     <td><strong>Asal Negara</strong></td>
-                    <td>Indonesia</td>
+                    <td>{{ detail.asal_negara }}</td>
                 </tr>
                 <tr>
                     <td><strong>Pemain</strong></td>
-                    <td>Pemain 1, Pemain 2</td>
+                    <td>{{ detail.pemain }}</td>
                 </tr>
                 <tr>
                     <td><strong>Penulis</strong></td>
-                    <td>Penulis Tayangan</td>
+                    <td>{{ detail.penulis }}</td>
                 </tr>
                 <tr>
                     <td><strong>Sutradara</strong></td>
-                    <td>Sutradara Tayangan</td>
+                    <td>{{ detail.sutradara }}</td>
                 </tr>
             </tbody>
         </table>
 
-
-        <a class="no-underline inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all rounded-md shadow-xl sm:w-auto bg-gradient-to-r from-netflix to-darker hover:bg-gradient-to-b dark:shadow-blue-900 shadow-netflix-darker hover:shadow-2xl hover:shadow-netflix hover:-tranneutral-y-px " href="{% url 'ulasan:show-reviews' %}">
+        <a class="no-underline inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all rounded-md shadow-xl sm:w-auto bg-gradient-to-r from-netflix to-darker hover:bg-gradient-to-b dark:shadow-blue-900 shadow-netflix-darker hover:shadow-2xl hover:shadow-netflix hover:-tranneutral-y-px "
+         href="{% url 'ulasan:show-review' detail.id %}">
             Lihat Ulasan
         </a>
-
     </div>
 </body>
 {% endblock %}

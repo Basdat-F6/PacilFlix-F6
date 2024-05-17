@@ -1,13 +1,14 @@
 from django.urls import path
-from .views import *
+from . import views
+
 app_name = 'tayangan'
 
 urlpatterns = [
-    path('', watch, name= 'watch'),
-    path('detail-film/', detail_film, name='detail-film'),
-    path('detail-series/', detail_series, name='detail-series'),
-    path('episode/', episode, name='episode'),
-    path('search/', search, name='search'),
-    path('topindonesia/', topindonesia, name='topindonesia'),
-
+    path('', views.watch, name='watch'),
+    path('detail-film/<uuid:id>/', views.detail_film, name='detail-film'),
+    path('detail-series/<uuid:id>/', views.detail_series, name='detail-series'),
+    path('episode/<uuid:id>/', views.episode, name='episode'),
+    path('search/', views.search, name='search'),
+    path('top-indonesia/', views.top_indonesia, name='top-indonesia'),
+    path('top-global/', views.top_global, name='top-global'),
 ]

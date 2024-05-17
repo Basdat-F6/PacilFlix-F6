@@ -31,27 +31,25 @@
             </div>
         </button>
     </label>
-</form>
+  </form>
 
   <!-- 10 Tayangan Terbaik Minggu Ini -->
   <div class="mx-auto relative flex justify-center">
     <ul class="flex gap-3 my-8 md:my-12 flex-wrap justify-center px-4 md:px-8 max-w-sm">
-      <button
-      class="px-2 py-1 md:text-lg relative bg-gray-100 rounded-lg select-none hover:shadow hover:shadow-teal-500 hover:outline hover:outline-teal-600">
-      <a href="{% url 'trailer:show-trailers' %}"  class="no-underline text-black visited:text-netflix">
-        Top 10 Global
-      </a>
-    </button>
-    <li
-    class="px-2 py-1 md:text-lg relative bg-gray-100 rounded-lg select-none hover:shadow hover:shadow-teal-500 hover:outline hover:outline-teal-600">
-    <a href="top-indonesia/" class="no-underline text-black visited:text-netflix">
-      Top 10 Indonesia
-    </a>
-  </li>
-  </ul>
+      <button class="px-2 py-1 md:text-lg relative bg-gray-100 rounded-lg select-none hover:shadow hover:shadow-teal-500 hover:outline hover:outline-teal-600">
+        <a href="{% url 'trailer:top-global' %}" class="no-underline text-black visited:text-netflix">
+          Top 10 Global
+        </a>
+      </button>
+      <li class="px-2 py-1 md:text-lg relative bg-gray-100 rounded-lg select-none hover:shadow hover:shadow-teal-500 hover:outline hover:outline-teal-600">
+        <a href="top-indonesia/" class="no-underline text-black visited:text-netflix">
+          Top 10 Indonesia
+        </a>
+      </li>
+    </ul>
   </div>
-<h2 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">10 Tayangan Terbaik Minggu Ini</h2>
-<table class="table table-hover">
+  <h2 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">10 Tayangan Terbaik Minggu Ini</h2>
+  <table class="table table-hover">
     <tr>
       <th>Peringkat</th>
       <th>Judul</th>
@@ -83,13 +81,13 @@
       <th>Total View 7 Hari Terakhir</th>
     </tr>
     <!-- For loop untuk film -->
-    {% for movie in film %}
+    {% for film in film %}
     <tr>
-      <td>{{ movie.judul }}</td>
-      <td>{{ movie.sinopsis }}</td>
-      <td><a href="{{ movie.trailer_url }}">Watch Trailer</a></td>
-      <td>{{ movie.tanggal_rilis }}</td>
-      <td>{{ movie.total_view }}</td>
+      <td>{{ film.judul }}</td>
+      <td>{{ film.sinopsis }}</td>
+      <td><a href="{{ film.trailer_url }}">Watch Trailer</a></td>
+      <td>{{ film.tanggal_rilis }}</td>
+      <td>{{ film.total_view }}</td>
     </tr>
     {% endfor %}
   </table>
@@ -104,13 +102,13 @@
       <th>Total View 7 Hari Terakhir</th>
     </tr>
     <!-- For loop untuk series -->
-    {% for series_episode in series %}
+    {% for series in series %}
     <tr>
-      <td>{{ series_episode.judul }}</td>
-      <td>{{ series_episode.sinopsis }}</td>
-      <td><a href="{{ series_episode.trailer_url }}">Watch Trailer</a></td>
-      <td>{{ series_episode.tanggal_rilis }}</td>
-      <td>{{ series_episode.total_view }}</td>
+      <td>{{ series.judul }}</td>
+      <td>{{ series.sinopsis }}</td>
+      <td><a href="{{ series.trailer_url }}">Watch Trailer</a></td>
+      <td>{{ series.tanggal_rilis }}</td>
+      <td>{{ series.total_view }}</td>
     </tr>
     {% endfor %}
   </table>

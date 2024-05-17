@@ -18,48 +18,52 @@
 {% include 'navbar.html' %}
     <div class="container my-12">
         <h1 class="mx-auto max-w-2xl text-4xl font-bold tracking-tight text-gray-900 sm:text-4xl text-netflix">Reviews</h1>
-        <h2 class="mx-auto max-w-2xl text-7xl font-medium tracking-tight text-gray-900 sm:text-7xl">The Internships</h2>
+        <h2 class="mx-auto max-w-2xl text-7xl font-medium tracking-tight text-gray-900 sm:text-7xl">{{ tayangan.judul }}</h2>
         <div class="max-w-xl mb-5 mx-auto mt-16 flex w-full flex-col border-2 rounded-lg bg-white p-8">
             <p class="mb-2 text-3xl text-black">Share your thoughts!</p>
-            <div class="mb-4">
-                <label for="rate" class="text-sm leading-7 text-gray-600">Rating</label>
-                <select name="select" id="select" class="block w-1/2 rounded-md border border-slate-300 bg-white px-3 py-4 font-semibold text-gray-500 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 sm:text-sm">
-                    <option class="font-semibold text-slate-300">5</option>
-                    <option class="font-semibold text-slate-300">4</option>
-                    <option class="font-semibold text-slate-300">3</option>
-                    <option class="font-semibold text-slate-300">2</option>
-                    <option class="font-semibold text-slate-300">1</option>
-                </select>        
-            </div>
-            <div class="mb-4">
-                <label for="message" class="text-sm leading-7 text-gray-600">Description</label>
-                <textarea id="message" name="message" class="h-32 w-full resize-none rounded border border-gray-300 bg-white py-1 px-3 text-base leading-6 text-gray-700 outline-none transition-colors duration-200 ease-in-out focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"></textarea>
-            </div>
-            <button class="rounded border-0 bg-netflix py-2 px-6 text-lg text-white hover:bg-black focus:outline-none">Submit</button>
+            <form method="post" class="w-full" action="{% url 'ulasan:add-review' tayangan.id %}">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label for="rating" class="text-sm leading-7 text-gray-600">Rating</label>
+                    <select name="rating" id="rating" class="block w-1/2 rounded-md border border-slate-300 bg-white px-3 py-4 font-semibold text-gray-500 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 sm:text-sm">
+                        <option value="5" class="font-semibold text-slate-300">5</option>
+                        <option value="4" class="font-semibold text-slate-300">4</option>
+                        <option value="3" class="font-semibold text-slate-300">3</option>
+                        <option value="2" class="font-semibold text-slate-300">2</option>
+                        <option value="1" class="font-semibold text-slate-300">1</option>
+                    </select>        
+                </div>
+                <div class="mb-4">
+                    <label for="description" class="text-sm leading-7 text-gray-600">Description</label>
+                    <textarea id="description" name="description" class="h-32 w-full resize-none rounded border border-gray-300 bg-white py-1 px-3 text-base leading-6 text-gray-700 outline-none transition-colors duration-200 ease-in-out focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"></textarea>
+                </div>
+                <button type="submit" class="rounded border-0 bg-netflix py-2 px-6 text-lg text-white hover:bg-black focus:outline-none" >Submit</button>
+            </form>
         </div>
     
-            <!-- Semua Film Tersedia -->
+        <!-- Daftar Ulasan -->
         <h2 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Daftar Ulasan</h2>
         <table class="table table-hover">
-            <tr>
-                <th>Username</th>
-                <th>Rating</th>
-                <th>Description</th>
-            </tr>
-            <!-- Hardcoded data untuk semua film -->
-            {% for review in reviews %}
-            <tr>
-                <td>{{ review.username }}</td>
-                <td>{{ review.rating }}</td>
-                <td>{{ review.description }}</td>
-            </tr>
-            {% endfor %}
-            <!-- tambahkan baris data lainnya sesuai kebutuhan -->
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Rating</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for review in reviews %}
+                <tr>
+                    <td>{{ review.username }}</td>
+                    <td>{{ review.rating }}</td>
+                    <td>{{ review.deskripsi }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="text-center">Belum ada ulasan.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
     </div>
-</body>
-
 {% endblock content %}
-
-
-  

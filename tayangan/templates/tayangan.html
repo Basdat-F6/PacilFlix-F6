@@ -32,15 +32,13 @@
         </form>
         <div class="mx-auto relative flex justify-center">
             <ul class="flex gap-3 my-8 md:my-12 flex-wrap justify-center px-4 md:px-8 max-w-sm">
-                <li
-                    class="px-2 py-1 md:text-lg relative bg-gray-100 rounded-lg select-none hover:shadow hover:shadow-teal-500 hover:outline hover:outline-teal-600">
-                    <a href="{% url 'tayangan:watch' %}" class="no-underline text-black visited:text-netflix">
+                <li class="px-2 py-1 md:text-lg relative bg-gray-100 rounded-lg select-none hover:shadow hover:shadow-teal-500 hover:outline hover:outline-teal-600">
+                    <a href="{% url 'tayangan:top-global' %}" class="no-underline text-black visited:text-netflix">
                         Top 10 Global
                     </a>
                 </li>
-                <li
-                    class="px-2 py-1 md:text-lg relative bg-gray-100 rounded-lg select-none hover:shadow hover:shadow-teal-500 hover:outline hover:outline-teal-600">
-                    <a href="topindonesia/" class="no-underline text-black visited:text-netflix">
+                <li class="px-2 py-1 md:text-lg relative bg-gray-100 rounded-lg select-none hover:shadow hover:shadow-teal-500 hover:outline hover:outline-teal-600">
+                    <a href="{% url 'tayangan:top-indonesia' %}" class="no-underline text-black visited:text-netflix">
                         Top 10 Indonesia
                     </a>
                 </li>
@@ -60,16 +58,16 @@
                     <th>Aksi</th>
                 </tr>
             </thead>
-            <!-- Hardcoded data untuk 10 tayangan terbaik -->
             <tbody>
-                {% for tayangan in data %}
+                {% for tayangan in tayangan %}
                 <tr>
                     <td>{{ tayangan.judul }}</td>
                     <td>{{ tayangan.sinopsis }}</td>
-                    <td><a href="{{ tayangan.trailer }}">Trailer</a></td>
-                    <td>{{ tayangan.tanggal_rilis }}</td>
+                    <td><a href="{{ tayangan.url_video_trailer }}">Trailer</a></td>
+                    <td>{{ tayangan.release_date_trailer }}</td>
                     <td>{{ tayangan.total_view }}</td>
-                    <td><a href="{% url 'tayangan:detail-film' %}">Halaman Tayangan</a></td>
+                    <td><a href="{% url 'tayangan:detail-film' tayangan.id %}">Halaman Tayangan</a></td>
+
                 </tr>
                 {% endfor %}
             </tbody>
@@ -78,39 +76,57 @@
         <!-- Semua Film Tersedia -->
         <h2 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Semua Film Tersedia</h2>
         <table class="table table-hover">
-            <tr>
-                <th>Judul</th>
-                <th>Sinopsis</th>
-                <th>Trailer</th>
-                <th>Tanggal Rilis</th>
-                <th>Total View</th>
-                <th>Aksi</th>
-            </tr>
-            <!-- Hardcoded data untuk semua film -->
-            <tr>
-                <td>Judul Film 1</td>
-                <td>Sinopsis singkat 1</td>
-                <td><a href="https://www.youtube.com/watch?v=ft70sAYrFyY">Trailer</a></td>
-                <td>Tanggal Rilis 1</td>
-                <td>Total View 1</td>
-                <td><a href="#">Halaman Tayangan</a></td>
-            </tr>
-            <!-- tambahkan baris data lainnya sesuai kebutuhan -->
+            <thead>
+                <tr>
+                    <th>Judul</th>
+                    <th>Sinopsis</th>
+                    <th>Trailer</th>
+                    <th>Tanggal Rilis</th>
+                    <th>Total View</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for film in film %}
+                <tr>
+                    <td>{{ film.judul }}</td>
+                    <td>{{ film.sinopsis }}</td>
+                    <td><a href="{{ film.url_video_trailer }}">Trailer</a></td>
+                    <td>{{ film.release_date_trailer }}</td>
+                    <td>{{ film.total_view }}</td>
+                    <td><a href="{% url 'tayangan:detail-film' film.id %}">Halaman Tayangan</a></td>
+                   
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
 
         <!-- Semua Series Tersedia -->
         <h2 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Semua Series Tersedia</h2>
         <table class="table table-hover">
-            <!-- Hardcoded data untuk semua series -->
-            <tr>
-                <td>Judul Series 1</td>
-                <td>Sinopsis singkat 1</td>
-                <td><a href="#">Trailer</a></td>
-                <td>Tanggal Rilis 1</td>
-                <td>Total View 1</td>
-                <td><a href="#">Halaman Tayangan</a></td>
-            </tr>
-            <!-- tambahkan baris data lainnya sesuai kebutuhan -->
+            <thead>
+                <tr>
+                    <th>Judul</th>
+                    <th>Sinopsis</th>
+                    <th>Trailer</th>
+                    <th>Tanggal Rilis</th>
+                    <th>Total View</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for series in series %}
+                <tr>
+                    <td>{{ series.judul }}</td>
+                    <td>{{ series.sinopsis }}</td>
+                    <td><a href="{{ series.url_video_trailer }}">Trailer</a></td>
+                    <td>{{ series.release_date_trailer }}</td>
+                    <td>{{ series.total_view }}</td>
+                    <td><a href="{% url 'tayangan:detail-series' series.id %}">Halaman Tayangan</a></td>
+           
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
     </div> 
 {% endblock content %}

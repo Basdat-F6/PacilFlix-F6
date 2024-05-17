@@ -4,12 +4,12 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
     tailwind.config = {
-          theme: {
-              extend: {
-              colors: {
-                netflix: '#E50914',
-                darker: '#B20710',
-              }
+        theme: {
+            extend: {
+                colors: {
+                    netflix: '#E50914',
+                    darker: '#B20710',
+                }
             }
         }
     }
@@ -20,12 +20,12 @@
 {% include 'navbar.html' %}
     <div class="container my-12 max-w-4xl ">
         <h1 class="mx-auto text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl text-netflix">Episode Details</h1>
-        <h2 class="mx-auto text-7xl font-medium tracking-tight text-gray-900 sm:text-7xl">Summer Strike</h2>
+        <h2 class="mx-auto text-7xl font-medium tracking-tight text-gray-900 sm:text-7xl">{{ detail.judul }}</h2>
 
-        <h2 class="mx-auto text-l font-medium tracking-tight text-gray-900 sm:text-4xl text-black">S1.E2 ∙ The Perfect Place for a New Beginning</h2>
+        <h2 class="mx-auto text-l font-medium tracking-tight text-gray-900 sm:text-4xl text-black">{{ episode.sub_judul }}</h2>
         
         <div class="flex flex-col gap-5 mt-6 md:flex-row">
-            <a class="no-underline my-4 px-6 py-4 text-white transition-all bg-netflix dark:bg-white dark:text-gray-800 rounded-md shadow-xl sm:w-auto hover:bg-gray-900 hover:text-white shadow-neutral-300 dark:shadow-neutral-700 hover:shadow-2xl hover:shadow-neutral-400 hover:-tranneutral-y-px" href="">
+            <a class="no-underline my-4 px-6 py-4 text-white transition-all bg-netflix dark:bg-white dark:text-gray-800 rounded-md shadow-xl sm:w-auto hover:bg-gray-900 hover:text-white shadow-neutral-300 dark:shadow-neutral-700 hover:shadow-2xl hover:shadow-neutral-400 hover:-tranneutral-y-px" href="{{ episode.url_video }}">
             Download Episode
             </a>
         </div>
@@ -35,35 +35,21 @@
             <table class="table table-hover mt-4">
                 <thead>
                     <tr>
-                        <th>Episode</th>
-                        <th>Tonton Sekarang</th>
+                        <th class="py-4">Episode</th>
+                        <th class="py-4">Tonton Sekarang</th>
                     </tr>
                 </thead>
                 <tbody>
+                    {% for ep in episodes %}
                     <tr>
-                        <td>Episode 1</td>
-                        <td>
-                            <button class="rounded-md bg-black px-6 py-3 text-white hover:from-darker hover:to-darker">
+                        <td class="py-4">Episode {{ forloop.counter }}</td>
+                        <td class="py-4">
+                            <a href="{{ episode.url_video }}" class="no-underline bg-black px-6 py-3 text-white hover:from-darker hover:to-darker">
                                 Tonton Sekarang
-                            </button>
+                            </a>
                         </td>
                     </tr>
-                    <tr>
-                        <td>Episode 3</td>
-                        <td>
-                            <button class="rounded-md bg-black px-6 py-3 text-white hover:from-darker hover:to-darker">
-                                Tonton Sekarang
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Episode 4</td>
-                        <td>
-                            <button class="rounded-md bg-black px-6 py-3 text-white hover:from-darker hover:to-darker">
-                                Tonton Sekarang
-                            </button>
-                        </td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -72,20 +58,20 @@
             <table class="table table-hover mt-6">
                 <tbody>
                     <tr>
-                        <td><strong>Sinopsis</strong></td>
-                        <td>Sinopsis tayangan pencarian</td>
+                        <td class="py-4"><strong>Sinopsis</strong></td>
+                        <td class="py-4">{{ episode.sinopsis }}</td>
                     </tr>
                     <tr>
-                        <td><strong>Durasi Film</strong></td>
-                        <td>90 menit</td>
+                        <td class="py-4"><strong>Durasi</strong></td>
+                        <td class="py-4">{{ episode.durasi }} menit</td>
                     </tr>
                     <tr>
-                        <td><strong>Tanggal Rilis</strong></td>
-                        <td>Tanggal Rilis Tayangan</td>
+                        <td class="py-4"><strong>Tanggal Rilis</strong></td>
+                        <td class="py-4">{{ episode.release_date }}</td>
                     </tr>
                     <tr>
-                        <td><strong>URL Episode</strong></td>
-                        <td><a href="https://www.youtube.com/watch?v=q3zqJs7JUCQ">https://www.youtube.com/watch?v=q3zqJs7JUCQ</a></td>
+                        <td class="py-4"><strong>URL Episode</strong></td>
+                        <td class="py-4"><a href="{{ episode.url_video }}">{{ episode.url_video }}</a></td>
                     </tr>
                 </tbody>
             </table>
