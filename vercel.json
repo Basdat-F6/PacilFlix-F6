@@ -21,7 +21,7 @@
       },
       {
         "src": "/(.*)",
-        "dest": "<projectfolder>/wsgi.py"
+        "dest": "pacilflix/wsgi.py"
       }
     ]
   }

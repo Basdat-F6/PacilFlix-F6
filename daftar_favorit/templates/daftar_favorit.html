@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'navbar.html' %}
+
+<div class="container mt-4">
+    <h2 class="text-center fw-bold">Daftar Favorit</h2>
+    <table class="table table-striped mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">Judul</th>
+                <th scope="col">Waktu Ditambahkan</th>
+                <th scope="col">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Tayangan Favorit 1</td>
+                <td>2024-05-02 10:00:00</td>
+                <td><button type="button" class="btn btn-danger" onclick="">Hapus</button></td>
+            </tr>
+            <tr>
+                <td>Tayangan Favorit 2</td>
+                <td>2024-05-02 11:00:00</td>
+                <td><button type="button" class="btn btn-danger" onclick="">Hapus</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button type="button" class="btn btn-dark mt-4" data-toggle="modal" data-target="#tambahFavoritModal">
+      Tambah Daftar Favorit
+    </button>
+</div>
+
+<!-- Modal Tambah Favorit -->
+<div class="modal fade" id="tambahFavoritModal" tabindex="-1" aria-labelledby="tambahFavoritModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tambahFavoritModalLabel">Tambah ke Daftar Favorit</h5>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-center fw-bold">TAMBAH KE FAVORIT</p>
+        <p class="text-center fw-bold">MODAL</p>
+        <form id="formTambahFavorit">
+          <div class="mb-3">
+            <label for="daftarFavorit" class="form-label">Judul Daftar Favorit:</label>
+            <select class="form-select" id="daftarFavorit" name="daftarFavorit">
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark" onclick="tambahKeFavorit()">Tambah</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<!-- Bootstrap JavaScript -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
+
+<script>
+  function tambahKeFavorit() {
+    // .....
+    $('#tambahFavoritModal').modal('hide');
+  }
+</script>
+
+{% endblock %}
