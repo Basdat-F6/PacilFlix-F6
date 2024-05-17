@@ -29,9 +29,10 @@
               Tipe Kontributor
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" href="{% url 'daftar_kontributor:show_daftar_kontributor_pemain' %}">Pemain</a></li>
-              <li><a class="dropdown-item" href="{% url 'daftar_kontributor:show_daftar_kontributor_sutradara' %}">Sutradara</a></li>
-              <li><a class="dropdown-item" href="{% url 'daftar_kontributor:show_daftar_kontributor_penulis_skenario' %}">Penulis Skenario</a></li>
+                <li><a class="dropdown-item" href="{% url 'daftar_kontributor:show_daftar_kontributor' 'semua' %}">Semua</a></li>
+              <li><a class="dropdown-item" href="{% url 'daftar_kontributor:show_daftar_kontributor' 'pemain' %}">Pemain</a></li>
+              <li><a class="dropdown-item" href="{% url 'daftar_kontributor:show_daftar_kontributor' 'sutradara' %}">Sutradara</a></li>
+              <li><a class="dropdown-item" href="{% url 'daftar_kontributor:show_daftar_kontributor' 'penulis_skenario' %}">Penulis Skenario</a></li>
             </ul>
           </div>
     </div>
