@@ -131,6 +131,7 @@ USE_TZ = True
 # This setting informs Django of the URI path from which your static files will be served to users
 # Here, they well be accessible at your-domain.onrender.com/static/... or yourcustomdomain.com/static/...
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR/'staticfiles'
 
 # This production code might break development mode, so we check whether we're in DEBUG mode
 if not DEBUG:
