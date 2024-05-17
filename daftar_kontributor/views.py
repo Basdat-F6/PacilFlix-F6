@@ -1,21 +1,5 @@
 from django.shortcuts import render
 from utils.query import *
-import psycopg2
-
-conn_params = {
-    'dbname': 'postgres',
-    'user': 'postgres.bbsbckcikdcqglpcrkvq',
-    'password': 'bussdeaDkcfg6022',
-    'host': 'aws-0-ap-southeast-1.pooler.supabase.com',
-    'port': '5432'
-}
-
-try:
-    conn = psycopg2.connect(**conn_params)
-    cursor = conn.cursor()
-    cursor.execute("SET search_path TO pacilflix;")
-except Exception as e:
-    print(f"An error occurred: {e}")
 
 def show_daftar_kontributor(request):
     username_cookie = request.COOKIES.get('username')
