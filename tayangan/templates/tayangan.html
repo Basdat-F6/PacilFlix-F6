@@ -68,10 +68,14 @@
                     <td>{{ tayangan.release_date_trailer }}</td>
                     <td>{{ tayangan.total_view }}</td>
                     <td>
-                        {% if tayangan.tayangan_type == 'film' %}
-                        <a href="{% url 'tayangan:detail-film' tayangan.id %}">Halaman Tayangan</a>
+                        {% if is_subscribed %}
+                            {% if tayangan.tayangan_type == 'film' %}
+                            <a href="{% url 'tayangan:detail-film' tayangan.id %}">Halaman Tayangan</a>
+                            {% else %}
+                            <a href="{% url 'tayangan:detail-series' tayangan.id %}">Halaman Tayangan</a>
+                            {% endif %}
                         {% else %}
-                        <a href="{% url 'tayangan:detail-series' tayangan.id %}">Halaman Tayangan</a>
+                            <p>Anda belum memiliki paket aktif</p>
                         {% endif %}
                     </td>
                 </tr>
@@ -99,7 +103,13 @@
                     <td><a href="{{ film.url_video_trailer }}">Trailer</a></td>
                     <td>{{ film.release_date_trailer }}</td>
                     <td>{{ film.total_view }}</td>
-                    <td><a href="{% url 'tayangan:detail-film' film.id %}">Halaman Tayangan</a></td>
+                    <td>
+                        {% if is_subscribed %}
+                            <a href="{% url 'tayangan:detail-film' film.id %}">Halaman Tayangan</a>
+                        {% else %}
+                            <p>Anda belum memiliki paket aktif</p>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -125,7 +135,13 @@
                     <td><a href="{{ series.url_video_trailer }}">Trailer</a></td>
                     <td>{{ series.release_date_trailer }}</td>
                     <td>{{ series.total_view }}</td>
-                    <td><a href="{% url 'tayangan:detail-series' series.id %}">Halaman Tayangan</a></td>
+                    <td>
+                        {% if is_subscribed %}
+                            <a href="{% url 'tayangan:detail-series' series.id %}">Halaman Tayangan</a>
+                        {% else %}
+                            <p>Anda belum memiliki paket aktif</p>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

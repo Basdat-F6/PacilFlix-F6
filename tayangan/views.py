@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect
 from django.db import connection
 from collections import namedtuple
 from django.utils import timezone
+from datetime import datetime
+
 
 
 def set_search_path():
@@ -152,6 +154,7 @@ def top_global(request):
         "film": film if isinstance(film, list) else [],
         "series": series if isinstance(series, list) else [],
         "error": top_global if not isinstance(top_global, list) else None,
+        "is_subscribed": cek_paket_aktif(request),
     }
 
     return render(request, "tayangan.html", context)
@@ -214,62 +217,8 @@ def top_indonesia(request):
         "film": film if isinstance(film, list) else [],
         "series": series if isinstance(series, list) else [],
         "error": top_indonesia if not isinstance(top_indonesia, list) else None,
-    }
+        "is_subscribed": cek_paket_aktif(request),
 
-    return render(request, "tayangan.html", context)
-
-    set_search_path()
-    username_cookie = request.COOKIES.get('username')
-
-    # Ambil 10 tayangan terbaik global selama 7 hari terakhir
-    top_global = query(
-        """
-        SELECT T.id, T.judul, T.sinopsis, T.url_video_trailer, T.release_date_trailer,
-               COUNT(R.id_tayangan) as total_view
-        FROM "TAYANGAN" T
-        JOIN "RIWAYAT_NONTON" R ON T.id = R.id_tayangan
-        JOIN "PENGGUNA" P ON R.username = P.username
-        WHERE (EXTRACT(EPOCH FROM (R.end_date_time - R.start_date_time)) / 60) >= 0.7 * (
-            SELECT COALESCE(F.durasi_film, S.durasi)
-            FROM "TAYANGAN" T2
-            LEFT JOIN "FILM" F ON T2.id = F.id_tayangan
-            LEFT JOIN "EPISODE" S ON T2.id = S.id_series
-            WHERE T2.id = T.id
-            LIMIT 1
-        )
-        AND R.end_date_time >= NOW() - INTERVAL '7 days'
-        GROUP BY T.id
-        ORDER BY total_view DESC
-        LIMIT 10
-        """
-    )
-
-    # Ambil data film
-    film = query(
-        """
-        SELECT T.id, T.judul, T.sinopsis, T.url_video_trailer, T.release_date_trailer, F.release_date_film
-        FROM "TAYANGAN" T
-        JOIN "FILM" F ON T.id = F.id_tayangan
-        ORDER BY T.judul
-        """
-    )
-
-    # Ambil data series
-    series = query(
-        """
-        SELECT T.id, T.judul, T.sinopsis, T.url_video_trailer, T.release_date_trailer, S.release_date
-        FROM "TAYANGAN" T
-        JOIN "EPISODE" S ON T.id = S.id_series
-        ORDER BY T.judul
-        """
-    )
-
-    context = {
-        "username_cookie": username_cookie,
-        "tayangan": top_global if isinstance(top_global, list) else [],
-        "film": film if isinstance(film, list) else [],
-        "series": series if isinstance(series, list) else [],
-        "error": top_global if not isinstance(top_global, list) else None,
     }
 
     return render(request, "tayangan.html", context)
@@ -443,13 +392,17 @@ def detail_series(request, id):
 
     if not detail:
         return HttpResponse("Detail not found", status=404)
+    detail = detail[0]
+    is_released = detail.release_date_trailer <= timezone.now().date()
 
     context = {
         "username_cookie": username_cookie,
-        "detail": detail[0],
+        "detail": detail,
         "episodes": episodes if isinstance(episodes, list) else [],
         "progress": progress if isinstance(progress, list) else [],
         "error": None,
+        "is_released": is_released,
+
     }
     return render(request, "detail_series.html", context)
 
@@ -492,11 +445,66 @@ def detail_film(request, id):
         LIMIT 1
         """, [id, username_cookie]
     )
+    detail = detail[0]
+    is_released = detail.release_date_trailer <= timezone.now().date()
 
     context = {
         "username_cookie": username_cookie,
-        "detail": detail[0],
+        "detail": detail,
         "progress": progress[0] if progress else None,
         "error": None,
+        "is_released": is_released,
+
     }
     return render(request, "detail_film.html", context)
+
+
+def cek_paket_aktif(request):
+    set_search_path()
+    username_cookie = request.COOKIES.get('username')
+
+    detail = query(
+        '''
+        SELECT 
+            T."nama_paket", 
+            P."harga", 
+            P."resolusi_layar", 
+            STRING_AGG(DP."dukungan_perangkat", ', ') AS dukungan_perangkat,
+            T."start_date_time", 
+            T."end_date_time",
+            T."metode_pembayaran",
+            T."timestamp_pembayaran"
+        FROM 
+            "TRANSACTION" T
+        JOIN 
+            "PAKET" P ON T."nama_paket" = P."nama"
+        LEFT JOIN 
+            "DUKUNGAN_PERANGKAT" DP ON T."nama_paket" = DP."nama_paket"
+        WHERE 
+            T."username" = %s
+        GROUP BY 
+            T."nama_paket", 
+            P."harga", 
+            P."resolusi_layar", 
+            T."start_date_time", 
+            T."end_date_time",
+            T."metode_pembayaran",
+            T."timestamp_pembayaran";
+        ''', [username_cookie]
+    )
+    is_subsribed = find_date_range(detail, datetime.now()) != None
+    return is_subsribed
+
+def find_date_range(date_ranges, input_date):
+    if isinstance(input_date, datetime):
+        input_date = input_date.date()
+    for entry in date_ranges:
+        start = entry[4]
+        end = entry[5]
+        if isinstance(start, datetime):
+            start = start.date()
+        if isinstance(end, datetime):
+            end = end.date()
+        if start <= input_date <= end:
+            return entry
+    return None

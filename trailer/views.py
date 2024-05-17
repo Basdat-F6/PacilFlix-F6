@@ -93,77 +93,114 @@ def search(request):
 
 
 def show_top_indo(request):
-    set_search_path()  # Set search_path ke skema 'pacilflix'
+    set_search_path()
+    username_cookie = request.COOKIES.get('username')
 
-    # Ambil data top 10 tayangan berdasarkan jumlah viewer selama 7 hari terakhir
+    # Ambil 10 trailer terbaik di Indonesia selama 7 hari terakhir
     top_indonesia = query(
         """
-        SELECT T.judul, T.sinopsis_trailer as sinopsis, T.url_video_trailer as trailer_url, T.release_date_trailer as tanggal_rilis,
-               COUNT(R.id_tayangan) as total_view
+        SELECT T.id, T.judul, T.sinopsis_trailer as sinopsis, T.url_video_trailer as trailer_url, T.release_date_trailer as tanggal_rilis,
+               COUNT(R.id_tayangan) as total_view,
+               CASE
+                   WHEN EXISTS (SELECT 1 FROM "FILM" F WHERE F.id_tayangan = T.id) THEN 'film'
+                   ELSE 'series'
+               END as tayangan_type
         FROM "TAYANGAN" T
         JOIN "RIWAYAT_NONTON" R ON T.id = R.id_tayangan
-        WHERE R.durasi_tonton >= 0.7 * (
-            SELECT CASE
-                WHEN F.durasi_film IS NOT NULL THEN F.durasi_film
-                ELSE S.durasi
-            END
-            FROM "TAYANGAN" T
-            LEFT JOIN "FILM" F ON T.id = F.id_tayangan
-            LEFT JOIN "EPISODE" S ON T.id = S.id_series
-            WHERE T.id = R.id_tayangan
+        JOIN "PENGGUNA" P ON R.username = P.username
+        WHERE P.negara_asal = 'Indonesia'
+        AND (EXTRACT(EPOCH FROM (R.end_date_time - R.start_date_time)) / 60) >= 0.7 * (
+            SELECT COALESCE(F.durasi_film, S.durasi)
+            FROM "TAYANGAN" T2
+            LEFT JOIN "FILM" F ON T2.id = F.id_tayangan
+            LEFT JOIN "EPISODE" S ON T2.id = S.id_series
+            WHERE T2.id = T.id
+            LIMIT 1
         )
-        AND R.waktu_nonton >= NOW() - INTERVAL '7 days'
+        AND R.end_date_time >= NOW() - INTERVAL '7 days'
         GROUP BY T.id
         ORDER BY total_view DESC
         LIMIT 10
         """
     )
-
-    username_cookie = request.COOKIES.get('username')
-    context = {
-        "username_cookie": username_cookie,
-        "trailers": top_indonesia if isinstance(top_indonesia, list) else [],
-        "error": top_indonesia if not isinstance(top_indonesia, list) else None,
-    }
-    print(context)
-    return render(request, "trailer_list.html", context)
-
-def show_top_global(request):
-    set_search_path()  # Set search_path ke skema 'pacilflix'
-
-    # Ambil 10 trailer terbaik secara global
-    top_global = query(
-        """
-        SELECT T.judul, T.sinopsis_trailer as sinopsis, T.url_video_trailer as trailer_url, T.release_date_trailer as tanggal_rilis
-        FROM "TAYANGAN" T
-        ORDER BY T.judul
-        LIMIT 10
-        """
-    )
-
-    # Ambil data film
     film = query(
         """
-        SELECT T.judul, T.sinopsis_trailer as sinopsis, T.url_video_trailer as trailer_url, F.release_date_film as tanggal_rilis
+        SELECT T.id, T.judul, T.sinopsis_trailer as sinopsis, T.url_video_trailer as trailer_url, T.release_date_trailer as tanggal_rilis, F.release_date_film
         FROM "TAYANGAN" T
         JOIN "FILM" F ON T.id = F.id_tayangan
         ORDER BY T.judul
-        LIMIT 10
         """
     )
 
     # Ambil data series
     series = query(
         """
-        SELECT T.judul, T.sinopsis_trailer as sinopsis, T.url_video_trailer as trailer_url, S.release_date as tanggal_rilis
+        SELECT T.id, T.judul, T.sinopsis_trailer as sinopsis, T.url_video_trailer as trailer_url, T.release_date_trailer as tanggal_rilis, S.release_date
         FROM "TAYANGAN" T
         JOIN "EPISODE" S ON T.id = S.id_series
         ORDER BY T.judul
-        LIMIT 10
         """
     )
 
+    context = {
+        "username_cookie": username_cookie,
+        "trailers": top_indonesia if isinstance(top_indonesia, list) else [],
+        "film": film if isinstance(film, list) else [],
+        "series": series if isinstance(series, list) else [],
+        "error": top_indonesia if not isinstance(top_indonesia, list) else None,
+    }
+
+    return render(request, "trailer_list.html", context)
+
+def show_top_global(request):
+    set_search_path()
     username_cookie = request.COOKIES.get('username')
+
+    # Ambil 10 trailer terbaik global selama 7 hari terakhir
+    top_global = query(
+        """
+        SELECT T.id, T.judul, T.sinopsis_trailer as sinopsis, T.url_video_trailer as trailer_url, T.release_date_trailer as tanggal_rilis,
+               COUNT(R.id_tayangan) as total_view,
+               CASE
+                   WHEN EXISTS (SELECT 1 FROM "FILM" F WHERE F.id_tayangan = T.id) THEN 'film'
+                   ELSE 'series'
+               END as tayangan_type
+        FROM "TAYANGAN" T
+        JOIN "RIWAYAT_NONTON" R ON T.id = R.id_tayangan
+        JOIN "PENGGUNA" P ON R.username = P.username
+        WHERE (EXTRACT(EPOCH FROM (R.end_date_time - R.start_date_time)) / 60) >= 0.7 * (
+            SELECT COALESCE(F.durasi_film, S.durasi)
+            FROM "TAYANGAN" T2
+            LEFT JOIN "FILM" F ON T2.id = F.id_tayangan
+            LEFT JOIN "EPISODE" S ON T2.id = S.id_series
+            WHERE T2.id = T.id
+            LIMIT 1
+        )
+        AND R.end_date_time >= NOW() - INTERVAL '7 days'
+        GROUP BY T.id
+        ORDER BY total_view DESC
+        LIMIT 10
+        """
+    )
+    film = query(
+        """
+        SELECT T.id, T.judul, T.sinopsis_trailer as sinopsis, T.url_video_trailer as trailer_url, T.release_date_trailer as tanggal_rilis, F.release_date_film
+        FROM "TAYANGAN" T
+        JOIN "FILM" F ON T.id = F.id_tayangan
+        ORDER BY T.judul
+        """
+    )
+
+    # Ambil data series
+    series = query(
+        """
+        SELECT T.id, T.judul, T.sinopsis_trailer as sinopsis, T.url_video_trailer as trailer_url, T.release_date_trailer as tanggal_rilis, S.release_date
+        FROM "TAYANGAN" T
+        JOIN "EPISODE" S ON T.id = S.id_series
+        ORDER BY T.judul
+        """
+    )
+
     context = {
         "username_cookie": username_cookie,
         "trailers": top_global if isinstance(top_global, list) else [],
