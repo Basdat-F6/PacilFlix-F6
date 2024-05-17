@@ -10,7 +10,6 @@
             font-style: normal;
             font-size: large;
         }
-
     </style>
 {% endblock meta %}
 
@@ -40,10 +39,10 @@
         </thead>
         <tbody>
             <tr>
-                <td>Plus</td>
-                <td>Rp100.000,00</td>
-                <td>1080p</td>
-                <td>PC, PS5</td>
+                <td>{{data_paket.0}}</td>
+                <td>{{data_paket.1}}</td>
+                <td>{{data_paket.2}}</td>
+                <td>{{data_paket.3}}</td>
             </tr>
         </tbody>
     </table>
@@ -54,23 +53,42 @@
 
     <br>
     <div class="d-flex justify-content-center">
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-              Metode Pembayaran
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" href="#">PayPal</a></li>
-              <li><a class="dropdown-item" href="#">Bank Transfer</a></li>
-              <li><a class="dropdown-item" href="#">Credit Card</a></li>
-            </ul>
-          </div>
-    </div>
+        <form id="payment-form" method="get">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                  Metode Pembayaran
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                  <li><a class="dropdown-item" href="#" data-url="{% url 'langganan:bayar' 'paypal' data_paket.0 %}">PayPal</a></li>
+                  <li><a class="dropdown-item" href="#" data-url="{% url 'langganan:bayar' 'bank-transfer' data_paket.0 %}">Bank Transfer</a></li>
+                  <li><a class="dropdown-item" href="#" data-url="{% url 'langganan:bayar' 'credit-card' data_paket.0 %}">Credit Card</a></li>
+                </ul>
+            </div>
 
-    <br>
+            <br>
 
-    <div class="d-flex justify-content-center">
-        <button type="button" class="btn btn-lg btn-outline-primary ">Bayar</button>
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-lg btn-outline-primary ">Bayar</button>
+            </div>
+        </form>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownItems = document.querySelectorAll('.dropdown-item');
+        const paymentForm = document.getElementById('payment-form');
+
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', (event) => {
+                event.preventDefault();
+                const url = event.target.getAttribute('data-url');
+                paymentForm.setAttribute('action', url);
+                const dropdownButton = document.getElementById('dropdownMenuButton1');
+                dropdownButton.textContent = event.target.textContent;
+            });
+        });
+    });
+</script>
 
 {% endblock content %}
