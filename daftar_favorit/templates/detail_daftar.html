@@ -4,31 +4,25 @@
 {% include 'navbar.html' %}
 
 <div class="container mt-4">
-    {% if tidak_punya_daftar %}
-    <p class="text-center">Anda belum memiliki Daftar Favorit</p>
-    {% else %}
-    <h2 class="text-center fw-bold">Daftar Favorit</h2>
+    <h2 class="text-center fw-bold">{{ judul_daftar }}</h2>
     <table class="table table-striped mt-3">
         <thead class="table-dark">
             <tr>
-                <th scope="col">Judul</th>
-                <th scope="col">Waktu Ditambahkan</th>
+                <th scope="col">Judul Tayangan</th>
                 <th scope="col">Aksi</th>
             </tr>
         </thead>
         <tbody>
-            {% for judul, timestamp in daftar_favorit %}
+            {% for tayangan in daftar_tayangan %}
             <tr>
-                <td><a href="{% url 'daftar_favorit:detail_daftar' judul=judul %}">{{ judul }}</a></td>
-                <td>{{ timestamp }}</td>
+                <td>{{ tayangan.0 }}</td></td>
                 <td>
-                    <button type="button" class="btn btn-danger delete-button" data-judul="{{ judul }}">Hapus</button>
+                    <button type="button" class="btn btn-danger delete-button" data-id="{{ tayangan.1 }}">Hapus</button>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    {% endif %}
 </div>
 
 <!-- jQuery -->
@@ -40,14 +34,14 @@
 <script>
     $(document).ready(function(){
         $('.delete-button').on('click', function(){
-            var judul = $(this).data('judul');
+            var id_tayangan = $(this).data('id');
             var csrf_token = '{{ csrf_token }}';  // Get CSRF token
 
             $.ajax({
                 type: 'POST',
-                url: '{% url "daftar_favorit:delete_daftar" %}',
+                url: '{% url "daftar_favorit:delete_tayangan" %}',
                 data: {
-                    'judul': judul,
+                    'id_tayangan': id_tayangan,
                     'csrfmiddlewaretoken': csrf_token
                 },
                 success: function(response) {

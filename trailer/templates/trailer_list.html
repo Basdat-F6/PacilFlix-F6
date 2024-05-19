@@ -79,7 +79,6 @@
       <th>Sinopsis</th>
       <th>URL Trailer</th>
       <th>Tanggal Rilis</th>
-      <th>Total View 7 Hari Terakhir</th>
     </tr>
     <!-- For loop untuk film -->
     {% for film in film %}
@@ -88,7 +87,6 @@
       <td>{{ film.sinopsis }}</td>
       <td><a href="{{ film.trailer_url }}">Watch Trailer</a></td>
       <td>{{ film.tanggal_rilis }}</td>
-      <td>{{ film.total_view }}</td>
     </tr>
     {% endfor %}
   </table>
@@ -100,7 +98,6 @@
       <th>Sinopsis</th>
       <th>URL Trailer</th>
       <th>Tanggal Rilis</th>
-      <th>Total View 7 Hari Terakhir</th>
     </tr>
     <!-- For loop untuk series -->
     {% for series in series %}
@@ -109,7 +106,6 @@
       <td>{{ series.sinopsis }}</td>
       <td><a href="{{ series.trailer_url }}">Watch Trailer</a></td>
       <td>{{ series.tanggal_rilis }}</td>
-      <td>{{ series.total_view }}</td>
     </tr>
     {% endfor %}
   </table>
