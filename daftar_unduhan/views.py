@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime, timedelta
 from django.http import JsonResponse
 
+@csrf_exempt
 def kelola_daftar_unduhan(request):
     username_cookie = request.COOKIES.get('username')
     connection, cursor = get_db_connection()
@@ -20,6 +21,7 @@ def kelola_daftar_unduhan(request):
                 [username_cookie]
             )
             daftar_unduhan = cursor.fetchall()
+            print(daftar_unduhan)
         except Exception as error:
             messages.error(request, str(error).split('CONTEXT')[0])
             daftar_unduhan = []
@@ -74,14 +76,6 @@ def delete_unduhan(request):
             connection.close()
 
     return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=405)
-
-
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from utils.query import get_db_connection
-from django.views.decorators.csrf import csrf_exempt
-from datetime import datetime
-from django.http import JsonResponse
 
 @csrf_exempt
 def unduh(request):
