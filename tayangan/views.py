@@ -388,12 +388,15 @@ def detail_series(request, id):
         return HttpResponse("Detail not found", status=404)
     detail = detail[0]
 
+    daftar_favorit = query('SELECT "judul", "timestamp" FROM "DAFTAR_FAVORIT" WHERE "username" = %s', [username_cookie])
+
     context = {
         "username_cookie": username_cookie,
         "detail": detail,
         "episodes": episodes if isinstance(episodes, list) else [],
         "progress": progress if isinstance(progress, list) else [],
         "error": None,
+        "daftar_favorit": daftar_favorit,
 
     }
     return render(request, "detail_series.html", context)
@@ -423,6 +426,8 @@ def detail_film(request, id):
         """, [id]
     )
 
+    daftar_favorit = query('SELECT "judul", "timestamp" FROM "DAFTAR_FAVORIT" WHERE "username" = %s', [username_cookie])
+
     if not detail:
         return HttpResponse("Detail not found", status=404)
 
@@ -445,7 +450,7 @@ def detail_film(request, id):
         "progress": progress[0] if progress else None,
         "error": None,
         "is_released": is_released,
-
+        "daftar_favorit": daftar_favorit,
     }
     return render(request, "detail_film.html", context)
 
