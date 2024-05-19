@@ -83,26 +83,6 @@
 #                 connection.close()
 #         return redirect('daftar_favorit:kelola_daftar_favorit')
 
-# @csrf_exempt
-# def delete_daftar(request):
-#     if request.method == 'POST':
-#         judul = request.POST.get('judul')
-#         username_cookie = request.COOKIES.get('username')
-#         connection, cursor = get_db_connection()
-
-#         if connection is None or cursor is None:
-#             messages.error(request, 'Database connection failed')
-
-#         try:
-#             cursor.execute('DELETE FROM "DAFTAR_FAVORIT" WHERE "judul" = %s AND "username" = %s', [judul, username_cookie])
-#             connection.commit()
-#         except Exception as error:
-#             messages.error(request, f'Terjadi kesalahan {error}')
-#         finally:
-#             cursor.close()
-#             connection.close()
-#         return redirect('daftar_favorit:kelola_daftar_favorit')
-
 # # @csrf_exempt
 # # def add(request):
 # #     if request.method == 'POST':
@@ -263,7 +243,7 @@ def add(request):
     if request.method == 'POST':
         id_tayangan = request.POST.get('idfilm')
         data_time = request.POST.get('timestamp').replace('a.m.', 'AM').replace('p.m.', 'PM')
-        timestamp =datetime.strptime(data_time, '%B %d, %Y, %I:%M %p')
+        timestamp = datetime.strptime(data_time, '%Y-%m-%d %H:%M:%S')
         username = request.COOKIES.get('username')
 
         connection, cursor = get_db_connection()

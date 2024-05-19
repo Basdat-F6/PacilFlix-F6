@@ -426,7 +426,7 @@ def detail_film(request, id):
     )
 
     daftar_favorit = query('SELECT "judul", "timestamp" FROM "DAFTAR_FAVORIT" WHERE "username" = %s', [username_cookie])
-
+    print(daftar_favorit)
     if not detail:
         return HttpResponse("Detail not found", status=404)
 

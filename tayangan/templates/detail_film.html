@@ -127,7 +127,7 @@
                                 <select class="form-select" id="daftarFavoritDropdown">
                                     <option value="" selected disabled>Pilih judul...</option>
                                     {% for judul, timestamp in daftar_favorit %}
-                                        <option value="{{ timestamp }}">{{ judul }}</option>
+                                        <option value="{{ timestamp|date:"Y-m-d H:i:s" }}">{{ judul }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -171,7 +171,31 @@
             $('#tambahFavoritModal').on('hidden.bs.modal', function (e) {
                 $('#daftarFavoritDropdown').val('');
             });
+            
+            $('.tambahKeFavBtn').click(function() {
+                var idfilm = $("#addToFavBtn").data('idtayangan');
+                var timestamp = $('#daftarFavoritDropdown').val();
+                var csrf_token = '{{ csrf_token }}';
 
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "daftar_favorit:add" %}',
+                    data: {
+                        'idfilm': idfilm,
+                        'timestamp': timestamp,
+                        'csrfmiddlewaretoken': csrf_token,
+                    },
+                    success: function(response) {
+                        alert(response.message);
+                        $('#tambahFavoritModal').modal('hide');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error occurred:", xhr.responseText);
+                        // Tampilkan pesan kesalahan jika terjadi kesalahan
+                        alert("An error occurred while adding to favorite.");
+                    }
+                });
+            });
 
             $('#unduhBtn').click(function() {
                 var idTayangan = $(this).data('idtayangan');
