@@ -127,7 +127,7 @@
                                 <select class="form-select" id="daftarFavoritDropdown">
                                     <option value="" selected disabled>Pilih judul...</option>
                                     {% for judul, timestamp in daftar_favorit %}
-                                        <option value="{{ timestamp }}">{{ judul }}</option>
+                                        <option value="{{ timestamp|date:"Y-m-d H:i:s" }}">{{ judul }}</option>
                                     {% endfor %}
                                 </select>
                             </div>

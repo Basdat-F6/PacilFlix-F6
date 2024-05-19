@@ -243,7 +243,7 @@ def add(request):
     if request.method == 'POST':
         id_tayangan = request.POST.get('idfilm')
         data_time = request.POST.get('timestamp').replace('a.m.', 'AM').replace('p.m.', 'PM')
-        timestamp =datetime.strptime(data_time, '%B %d, %Y, %I:%M %p')
+        timestamp = datetime.strptime(data_time, '%Y-%m-%d %H:%M:%S')
         username = request.COOKIES.get('username')
 
         connection, cursor = get_db_connection()
