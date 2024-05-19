@@ -392,12 +392,15 @@ def detail_series(request, id):
     detail = detail[0]
     is_released = detail.release_date_trailer <= timezone.now().date()
 
+    daftar_favorit = query('SELECT "judul", "timestamp" FROM "DAFTAR_FAVORIT" WHERE "username" = %s', [username_cookie])
+
     context = {
         "username_cookie": username_cookie,
         "detail": detail,
         "episodes": episodes if isinstance(episodes, list) else [],
         "progress": progress if isinstance(progress, list) else [],
         "error": None,
+        "daftar_favorit": daftar_favorit,
         "is_released": is_released,
 
     }

@@ -5,7 +5,6 @@ from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime, timedelta
 from django.http import JsonResponse
 
-
 def kelola_daftar_unduhan(request):
     username_cookie = request.COOKIES.get('username')
     connection, cursor = get_db_connection()
@@ -76,23 +75,37 @@ def delete_unduhan(request):
 
     return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=405)
 
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from utils.query import get_db_connection
+from django.views.decorators.csrf import csrf_exempt
+from datetime import datetime
+from django.http import JsonResponse
+
 @csrf_exempt
 def unduh(request):
     if request.method == 'POST':
-        connection, cursor = get_db_connection()
-        id_tayangan = request.POST.get('id_tayangan')
-        timestamp = request.POST.get('timestamp')
+        id_tayangan = request.POST.get('idTayangan')
         username = request.COOKIES.get('username')
-        print(id_tayangan, timestamp, username)
-        try:
-            # Insert data into the database
-            cursor.execute('INSERT INTO "TAYANGAN_TERUNDUH" ("id_tayangan", "username") VALUES (%s, %s, %s)', (id_tayangan, timestamp, username))
-            connection.commit()
-        except Exception as e:
-            # Print or log any error that occurs
-            print(f"Error inserting data into database: {e}")
-            # Rollback the transaction if an error occurs
-            connection.rollback()
 
-        # Redirect the user back to the detail page of the film that was downloaded
-        return redirect('tayangan:detail_film', id_tayangan=id_tayangan)
+        connection, cursor = get_db_connection()
+        try:
+            cursor.execute('SELECT * FROM "TAYANGAN_TERUNDUH" WHERE "id_tayangan" = %s AND "username" = %s', (id_tayangan, username))
+            already_downloaded = cursor.fetchone()
+            if already_downloaded:
+                return JsonResponse({'success': False, 'message': 'Anda sudah mengunduh tayangan ini'}, status=400)
+            else:
+                timestamp = datetime.now()
+                cursor.execute('INSERT INTO "TAYANGAN_TERUNDUH" ("id_tayangan", "timestamp", "username") VALUES (%s, %s, %s)', (id_tayangan, timestamp, username))
+                connection.commit()
+                return JsonResponse({'success': True, 'message': 'Tayangan berhasil diunduh'})
+        except Exception as e:
+            print(f"Error inserting data into database: {e}")
+            connection.rollback()
+            return JsonResponse({'success': False, 'message': 'Terjadi kesalahan saat mengunduh tayangan'}, status=500)
+        finally:
+            cursor.close()
+            connection.close()
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=405)

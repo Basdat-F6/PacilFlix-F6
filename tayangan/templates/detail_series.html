@@ -22,7 +22,8 @@
         <h1 class="mx-auto max-w-2xl text-4xl font-bold tracking-tight text-gray-900 sm:text-4xl text-netflix">Series Details</h1>
         <h2 class="mx-auto max-w-2xl text-7xl font-medium tracking-tight text-gray-900 sm:text-7xl">{{ detail.judul }}</h2>
         <div class="flex justify-center gap-2 my-4">
-            <a class="mx-8 no-underline inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all bg-gray-700 dark:bg-white dark:text-gray-800 rounded-md shadow-xl sm:w-auto hover:bg-gray-900 hover:text-white shadow-neutral-300 dark:shadow-neutral-700 hover:shadow-2xl hover:shadow-neutral-400 hover:-tranneutral-y-px" href="" data-toggle="modal" data-target="#unduhTayanganModal">
+            <a class="mx-8 no-underline inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all bg-gray-700 dark:bg-white dark:text-gray-800 rounded-md shadow-xl sm:w-auto hover:bg-gray-900 hover:text-white shadow-neutral-300 dark:shadow-neutral-700 hover:shadow-2xl hover:shadow-neutral-400 hover:-tranneutral-y-px" 
+            href="" id="unduhBtn" href="" data-toggle="modal" data-target="#unduhTayanganModal" data-idtayangan="{{ detail.id }}">
                 Download Series
             </a>
             <a class="no-underline inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all bg-gray-700 dark:bg-white dark:text-gray-800 rounded-md shadow-xl sm:w-auto hover:bg-gray-900 hover:text-white shadow-neutral-300 dark:shadow-neutral-700 hover:shadow-2xl hover:shadow-neutral-400 hover:-tranneutral-y-px" href="" data-toggle="modal" data-target="#tambahFavoritModal">
@@ -85,6 +86,120 @@
             Lihat Ulasan
         </a>
 
+        <!-- Modal untuk menambahkan tayangan ke Daftar Favorit -->
+        <div class="modal fade" 
+            id="tambahFavoritModal" 
+            tabindex="-1" 
+            aria-labelledby="tambahFavoritModalLabel" 
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tambahFavoritModalLabel">Tambah ke Daftar Favorit</h5>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formTambahFavorit">
+                            <div class="mb-3">
+                                <label for="daftarFavorit" class="form-label">Judul Daftar Favorit:</label>
+                                <select class="form-select" id="daftarFavoritDropdown">
+                                    <option value="" selected disabled>Pilih judul...</option>
+                                    {% for judul, timestamp in daftar_favorit %}
+                                        <option value="{{ timestamp }}">{{ judul }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark tambahKeFavBtn" data-idfilm="{{ detail.id }}">Tambah</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal Unduhan Tayangan -->
+        <div class="modal fade" id="unduhTayanganModal" 
+        tabindex="-1" 
+        aria-labelledby="unduhTayanganModalLabel" 
+        aria-hidden="true" data-judul="{{ detail.judul}}"
+        data-idTayangan="{{ detail.id }}">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="unduhTayanganModalLabel">Unduh Tayangan</h5>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="unduhSuccessMessage" class="text-center fw-bold" style="display: none;">SUKSES MENAMBAHKAN TAYANGAN KE DAFTAR UNDUHAN</p>
+                        <p id="unduhErrorMessage" class="text-center text-danger fw-bold" style="display: none;">Tayangan ini sudah diunduh</p>
+                        <p id="unduhSuccessDetails" style="display: none;">Selamat! Anda telah berhasil mengunduh <span id="judulTayangan"></span> dan akan berlaku hingga <span id="expiredTime"></span>. Cek informasi selengkapnya pada halaman daftar unduhan.</p>
+                    </div>    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="keDaftarUnduhan">Daftar Unduhan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#tambahFavoritModal').on('hidden.bs.modal', function (e) {
+                $('#daftarFavoritDropdown').val('');
+            });
+
+            $('#unduhBtn').click(function() {
+                var idTayangan = $(this).data('idtayangan');
+                var csrf_token = '{{ csrf_token }}';
+                
+                console.log("Unduh button clicked. idTayangan:", idTayangan);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "daftar_unduhan:unduh" %}',
+                    data: {
+                        'idTayangan': idTayangan,
+                        'csrfmiddlewaretoken': csrf_token
+                    },
+                    success: function(response) {
+                        if (response.message === 'Anda sudah mengunduh tayangan ini') {
+                            $('#unduhSuccessMessage').hide();
+                            $('#unduhSuccessDetails').hide();
+                            $('#unduhErrorMessage').show().text(response.message);
+                        } else {
+                            var judulTayangan = $('#unduhTayanganModal').data('judul'); 
+                            var currentTime = new Date();
+                            var expiredTime = new Date();
+                            expiredTime.setDate(currentTime.getDate() + 7); // Tayangan berlaku selama 7 hari
+                            var formattedExpiredTime = expiredTime.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+                            $('#judulTayangan').text(judulTayangan);
+                            $('#expiredTime').text(formattedExpiredTime);
+                            $('#unduhSuccessMessage').show();
+                            $('#unduhSuccessDetails').show();
+                            $('#unduhErrorMessage').hide();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                            console.error("Error occurred:", xhr.responseText);
+                            $('#unduhSuccessMessage').hide();
+                            $('#unduhSuccessDetails').hide();
+                            $('#unduhErrorMessage').show();
+                    }
+                });
+            });
+
+            $('#keDaftarUnduhan').click(function() {
+                window.location.href = "{% url 'daftar_unduhan:kelola_daftar_unduhan' %}";
+            });
+        });
+
+    </script>
+
+
 {% endblock %}
