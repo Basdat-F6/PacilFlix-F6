@@ -4,6 +4,17 @@
 {% include 'navbar.html' %}
 
 <div class="container mt-4">
+    {% if messages %}
+    <div>
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if tidak_punya_daftar %}
+    <p class="text-center">Anda belum memiliki Daftar Unduhan</p>
+    {% else %}
     <h2 class="text-center fw-bold">Daftar Unduhan</h2>
     <table class="table table-striped mt-3">
         <thead class="table-dark">
@@ -14,42 +25,16 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Tayangan 1</td>
-                <td>2024-05-02 10:00:00</td>
-                <td><button type="button" class="btn btn-danger" onclick="">Hapus</button></td>
-            </tr>
-            <tr>
-                <td>Tayangan 2</td>
-                <td>2024-05-02 11:00:00</td>
-                <td><button type="button" class="btn btn-danger" onclick="">Hapus</button></td>
-            </tr>
+          {% for unduhan in daftar_unduhan %}
+          <tr>
+            <td>{{ unduhan.0 }}</td>
+            <td>{{ unduhan.1 }}</td>
+            <td><button type="button" class="btn btn-danger btn-hapus-unduhan" data-id="{{ unduhan.2 }}" data-timestamp="{{ unduhan.1 }}">Hapus</button></td>
+          </tr>
+          {% endfor %}
         </tbody>
     </table>
-
-    <!-- Tombol Unduh Tayangan -->
-    <button type="button" class="btn btn-dark mt-4" data-toggle="modal" data-target="#unduhTayanganModal">
-      Unduh Tayangan
-    </button>
-</div>
-
-<!-- Modal Unduh Tayangan -->
-<div class="modal fade" id="unduhTayanganModal" tabindex="-1" aria-labelledby="unduhTayanganModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="unduhTayanganModalLabel">Unduh Tayangan</h5>
-        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p class="text-center fw-bold">SUKSES MENAMBAHKAN TAYANGAN KE DAFTAR UNDUHAN</p>
-        <p id="unduhSuccessMessage" style="display: none;">Selamat! Anda telah berhasil mengunduh <span id="judulTayangan"></span> dan akan berlaku hingga <span id="expiredTime"></span>. Cek informasi selengkapnya pada halaman daftar unduhan.</p>
-        </div>    
-    <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="unduhBtn">Daftar Unduhan</button>
-      </div>
-    </div>
-  </div>
+    {% endif %}
 </div>
 
 <!-- jQuery -->
@@ -59,27 +44,33 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
 
 <script>
-  $('#unduhBtn').click(function() {
-    // Sembunyikan modal
-    $('#unduhTayanganModal').modal('hide');
-  });
-
-  function showSuccessMessage() {
-    var judulTayangan = "Judul Tayangan"; 
-    var currentTime = new Date();
-    var expiredTime = new Date();
-    expiredTime.setDate(currentTime.getDate() + 7); // Tayangan berlaku selama 7 hari
-    var formattedExpiredTime = expiredTime.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    
-    $('#judulTayangan').text(judulTayangan);
-    $('#expiredTime').text(formattedExpiredTime);
-    $('#unduhSuccessMessage').show();
-  }
-
-  // Panggil showSuccessMessage ketika dokumen sudah siap
-  $(document).ready(function() {
-    showSuccessMessage();
-  });
+    $(document).ready(function() {
+        $('.btn-hapus-unduhan').click(function() {
+            var idTayangan = $(this).data('id');
+            $.ajax({
+                type: 'POST',
+                url: '{% url "daftar_unduhan:delete_unduhan" %}',
+                data: {
+                    'id_tayangan': idTayangan,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    var errorMessage = 'Terjadi kesalahan saat menghapus tayangan';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    }
+                    alert(errorMessage);
+                }
+            });
+        });
+    });
 </script>
 
 {% endblock %}

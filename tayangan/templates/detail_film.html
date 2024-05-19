@@ -4,16 +4,16 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
     tailwind.config = {
-          theme: {
-              extend: {
-              colors: {
-                netflix: '#E50914',
-                darker:'#B81D24'
-              }
+        theme: {
+            extend: {
+                colors: {
+                    netflix: '#E50914',
+                    darker: '#B81D24'
+                }
             }
         }
     }
-    </script>
+</script>
 {% endblock meta %}
 
 {% block content %}
@@ -32,7 +32,7 @@
                         <button type="submit" class="no-underline inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all rounded-md shadow-xl sm:w-auto bg-gradient-to-r from-netflix to-blue-500 hover:bg-gradient-to-b dark:shadow-blue-900 shadow-blue-200 hover:shadow-2xl hover:shadow-blue-400 hover:-tranneutral-y-px">
                             Watch Now
                         </button>
-                        <a class="no-underline inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all bg-gray-700 dark:bg-white dark:text-gray-800 rounded-md shadow-xl sm:w-auto hover:bg-gray-900 hover:text-white shadow-neutral-300 dark:shadow-neutral-700 hover:shadow-2xl hover:shadow-neutral-400 hover:-tranneutral-y-px" href="" data-toggle="modal" data-target="#unduhTayanganModal">
+                        <a class="downloadBtn inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all bg-gray-700 dark:bg-white dark:text-gray-800 rounded-md shadow-xl sm:w-auto hover:bg-gray-900 hover:text-white shadow-neutral-300 dark:shadow-neutral-700 hover:shadow-2xl hover:shadow-neutral-400 hover:-tranneutral-y-px" href="" data-toggle="modal" data-target="#unduhTayanganModal">
                             Download Film
                         </a>
                         <a class="no-underline inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all bg-gray-700 dark:bg-white dark:text-gray-800 rounded-md shadow-xl sm:w-auto hover:bg-gray-900 hover:text-white shadow-neutral-300 dark:shadow-neutral-700 hover:shadow-2xl hover:shadow-neutral-400 hover:-tranneutral-y-px" href="" data-toggle="modal" data-target="#tambahFavoritModal">
@@ -105,36 +105,41 @@
          href="{% url 'ulasan:show-review' detail.id %}">
             Lihat Ulasan
         </a>
-        
 
+        <!-- Modal untuk menambahkan tayangan ke Daftar Favorit -->
         <!-- Modal untuk menambahkan tayangan ke Daftar Favorit -->
         <div class="modal fade" id="tambahFavoritModal" tabindex="-1" aria-labelledby="tambahFavoritModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="tambahFavoritModalLabel">Tambah ke Daftar Favorit</h5>
-                  <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <p class="text-center fw-bold">TAMBAH KE FAVORIT</p>
-                  <p class="text-center fw-bold">MODAL</p>
-                  <form id="formTambahFavorit">
-                    <div class="mb-3">
-                      <label for="daftarFavorit" class="form-label">Judul Daftar Favorit:</label>
-                      <select class="form-select" id="daftarFavorit" name="daftarFavorit">
-                      </select>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tambahFavoritModalLabel">Tambah ke Daftar Favorit</h5>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                     </div>
-                  </form>
+                    <div class="modal-body">
+                        <form id="formTambahFavorit">
+                            <div class="mb-3">
+                                <label for="daftarFavorit" class="form-label">Judul Daftar Favorit:</label>
+                                <select class="form-select" id="daftarFavoritDropdown">
+                                    <option value="" selected disabled>Pilih judul...</option>
+                                    {% for judul, timestamp in daftar_favorit %}
+                                        <option value="{{ judul }} | {{ timestamp }}">{{ judul }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-dark tambahKeFavBtn">Tambah</button>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-dark" id="tambahKeFavBtn">Tambah</button>
-                </div>
-              </div>
             </div>
         </div>
-        
+
         <!-- Modal Unduh Tayangan -->
-        <div class="modal fade" id="unduhTayanganModal" tabindex="-1" aria-labelledby="unduhTayanganModalLabel" aria-hidden="true">
+        <div class="modal fade" id="unduhTayanganModal" tabindex="-1" aria-labelledby="unduhTayanganModalLabel" aria-hidden="true" 
+            data-judul="{{ detail.judul}}"
+            data-idTayangan="{{ detail.id }}">
             <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -153,35 +158,132 @@
         </div>
     </div>
 
-
-<script>
-    // Handling tambah ke Daftar Favorit
-    $('#tambahKeFavBtn').click(function() {
-        // menutup modal
-        $('#tambahKeFavBtn').modal('hide');
-    });
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPxXKcsPAT6Erc5eWs=" crossorigin="anonymous"></script>
     
-    // Handling unduh tayangan
-    $('#unduhBtn').click(function() {
-      // Redirect ke page Daftar Unduhan
-      window.location.href = "{% url 'daftar_unduhan:kelola_daftar_unduhan' %}"
-    });
-  
-    function showSuccessMessage() {
-      var judulTayangan = "Judul Tayangan"; 
-      var currentTime = new Date();
-      var expiredTime = new Date();
-      expiredTime.setDate(currentTime.getDate() + 7); // Tayangan berlaku selama 7 hari
-      var formattedExpiredTime = expiredTime.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      
-      $('#judulTayangan').text(judulTayangan);
-      $('#expiredTime').text(formattedExpiredTime);
-      $('#unduhSuccessMessage').show();
-    }
-  
-    // Panggil showSuccessMessage ketika dokumen sudah siap
-    $(document).ready(function() {
-      showSuccessMessage();
-    });
-  </script>
+    
+    <script>
+        $(document).ready(function() {
+            $('#tambahFavoritModal').on('hidden.bs.modal', function (e) {
+                $('#daftarFavoritDropdown').val('');
+            });
+
+            $('.tambahKeFavBtn').click(function() {
+                var selectedOption = $('#daftarFavoritDropdown').val();
+                if (selectedOption) {
+                    var [judul, timestamp] = selectedOption.split('|');
+                    $.ajax({
+                        type: 'POST',
+                        url: '{% url "daftar_favorit:add_to_daftar" %}',
+                        data: {
+                            'judul': judul,
+                            'timestamp': timestamp,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                alert('Tayangan berhasil ditambahkan ke daftar favorit');
+                                $('#tambahFavoritModal').modal('hide');
+                            } else {
+                                alert(response.message);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            var errorMessage = 'Terjadi kesalahan saat menambahkan tayangan ke daftar favorit';
+                            if (xhr.responseJSON && xhr.responseJSON.message) {
+                                errorMessage = xhr.responseJSON.message;
+                            }
+                            alert(errorMessage);
+                        }
+                    });
+                } else {
+                    alert('Silakan pilih judul terlebih dahulu');
+                }
+            });
+
+            $('#unduhBtn').click(function() {
+                window.location.href = "{% url 'daftar_unduhan:kelola_daftar_unduhan' %}"
+            });
+        });
+    </script>
+
+    <!-- <script>
+        $(document).ready(function() {
+            $('.tambahKeFavBtn').click(function() {
+                var selectedOption = $('#favSelect').val();
+                if (selectedOption) {
+                    var [judul, timestamp] = selectedOption.split('|');
+                    $.ajax({
+                        type: 'POST',
+                        url: '{% url "daftar_favorit:add_to_daftar" %}',
+                        data: {
+                            'judul': judul,
+                            'timestamp': timestamp,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                alert('Tayangan berhasil ditambahkan ke daftar favorit');
+                                $('#addToFavModal').modal('hide');
+                            } else {
+                                alert(response.message);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            var errorMessage = 'Terjadi kesalahan saat menambahkan tayangan ke daftar favorit';
+                            if (xhr.responseJSON && xhr.responseJSON.message) {
+                                errorMessage = xhr.responseJSON.message;
+                            }
+                            alert(errorMessage);
+                        }
+                    });
+                } else {
+                    alert('Silakan pilih judul terlebih dahulu');
+                }
+            });
+        }); -->
+<!-- 
+        // // Handling unduh tayangan
+        
+    
+        // function showSuccessMessage() {
+        // var judulTayangan = $('#unduhTayanganModal').data('judul');
+        // var currentTime = new Date();
+        // var expiredTime = new Date();
+        // expiredTime.setDate(currentTime.getDate() + 7); // Tayangan berlaku selama 7 hari
+        // var formattedExpiredTime = expiredTime.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        
+        // $('#judulTayangan').text(judulTayangan);
+        // $('#expiredTime').text(formattedExpiredTime);
+        // $('#unduhSuccessMessage').show();
+        // }
+
+        // function unduhTayangan() {
+        //     var idTayangan = $('#unduhTayanganModal').data('idTayangan');
+        //     var timestamp = new Date(); // Perbaiki penulisan
+
+        //     $.ajax({
+        //         type: 'POST',
+        //         url: '{% url "daftar_unduhan:unduh" %}',
+        //         data: {
+        //             'idTayangan': idTayangan,
+        //             'timestamp': timestamp,
+        //             'csrfmiddlewaretoken': '{{ csrf_token }}'
+        //         },
+        //         success: function(response) { // Panggil fungsi setelah AJAX berhasil
+        //             location.reload();
+        //         },
+        //         error: function(xhr, status, error) {
+        //             console.error(xhr.responseText);
+        //         }
+        //     });
+        // }
+
+        // $(document).ready(function() {
+        //     showSuccessMessage();
+        //     $('.downloadBtn').click(function(){
+        //     unduhTayangan(); // Panggil fungsi unduhTayangan() saat tombol unduh ditekan
+        //     });
+        // });
+
+    </script> -->
 {% endblock %}

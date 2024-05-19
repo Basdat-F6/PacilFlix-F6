@@ -428,6 +428,8 @@ def detail_film(request, id):
         """, [id]
     )
 
+    daftar_favorit = query('SELECT "judul", "timestamp" FROM "DAFTAR_FAVORIT" WHERE "username" = %s', [username_cookie])
+
     if not detail:
         return HttpResponse("Detail not found", status=404)
 
@@ -450,7 +452,7 @@ def detail_film(request, id):
         "progress": progress[0] if progress else None,
         "error": None,
         "is_released": is_released,
-
+        "daftar_favorit": daftar_favorit,
     }
     return render(request, "detail_film.html", context)
 
