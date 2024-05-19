@@ -139,7 +139,7 @@ def top_global(request):
     # Ambil data series
     series = query(
         """
-        SELECT T.id, T.judul, T.sinopsis, T.url_video_trailer, T.release_date_trailer, S.release_date
+        SELECT DISTINCT ON (T.judul)  T.id, T.judul, T.sinopsis, T.url_video_trailer, T.release_date_trailer, S.release_date
         FROM "TAYANGAN" T
         JOIN "EPISODE" S ON T.id = S.id_series
         ORDER BY T.judul
@@ -202,7 +202,7 @@ def top_indonesia(request):
     # Ambil data series
     series = query(
         """
-        SELECT T.id, T.judul, T.sinopsis, T.url_video_trailer, T.release_date_trailer, S.release_date
+        SELECT DISTINCT ON (T.judul) T.id, T.judul, T.sinopsis, T.url_video_trailer, T.release_date_trailer, S.release_date
         FROM "TAYANGAN" T
         JOIN "EPISODE" S ON T.id = S.id_series
         ORDER BY T.judul
@@ -265,14 +265,7 @@ def detail_episode(request, id_series, sub_judul):
 
     detail = query(
         """
-        SELECT T.id, T.judul, T.sinopsis, T.url_video_trailer, T.release_date_trailer,
-               (SELECT COUNT(R.id_tayangan) FROM "RIWAYAT_NONTON" R WHERE R.id_tayangan = T.id) as total_view,
-               (SELECT AVG(U.rating) FROM "ULASAN" U WHERE U.id_tayangan = T.id) as rating_rata_rata,
-               (SELECT STRING_AGG(G.genre, ', ') FROM "GENRE_TAYANGAN" G WHERE G.id_tayangan = T.id) as genre,
-               T.asal_negara,
-               (SELECT STRING_AGG(C.nama, ', ') FROM "PEMAIN" P JOIN "CONTRIBUTORS" C ON P.id = C.id JOIN "MEMAINKAN_TAYANGAN" TP ON P.id = TP.id_pemain WHERE TP.id_tayangan = T.id) as pemain,
-               (SELECT STRING_AGG(C.nama, ', ') FROM "PENULIS_SKENARIO" P JOIN "CONTRIBUTORS" C ON P.id = C.id JOIN "MENULIS_SKENARIO_TAYANGAN" TP ON P.id = TP.id_penulis_skenario WHERE TP.id_tayangan = T.id) as penulis,
-               (SELECT C.nama FROM "SUTRADARA" S JOIN "CONTRIBUTORS" C ON S.id = C.id WHERE S.id = T.id_sutradara) as sutradara
+        SELECT T.id, T.judul
         FROM "TAYANGAN" T
         WHERE T.id = %s
         """, [id_series]
@@ -305,13 +298,17 @@ def detail_episode(request, id_series, sub_judul):
         """, [id_series, username_cookie]
     )
 
+    episode = episode[0]
+    is_released = episode.release_date <= timezone.now().date()
+
     context = {
         "username_cookie": username_cookie,
         "detail": detail[0] if detail else None,
-        "episode": episode[0] if episode else None,
+        "episode": episode if episode else None,
         "episodes": episodes if isinstance(episodes, list) else [],
         "progress": progress[0] if progress else None,
         "error": detail if not detail else None,
+        "is_released":is_released,
     }
     return render(request, "episode.html", context)
 
@@ -390,7 +387,6 @@ def detail_series(request, id):
     if not detail:
         return HttpResponse("Detail not found", status=404)
     detail = detail[0]
-    is_released = detail.release_date_trailer <= timezone.now().date()
 
     context = {
         "username_cookie": username_cookie,
@@ -398,7 +394,6 @@ def detail_series(request, id):
         "episodes": episodes if isinstance(episodes, list) else [],
         "progress": progress if isinstance(progress, list) else [],
         "error": None,
-        "is_released": is_released,
 
     }
     return render(request, "detail_series.html", context)
@@ -442,7 +437,7 @@ def detail_film(request, id):
         """, [id, username_cookie]
     )
     detail = detail[0]
-    is_released = detail.release_date_trailer <= timezone.now().date()
+    is_released = detail.release_date_film <= timezone.now().date()
 
     context = {
         "username_cookie": username_cookie,

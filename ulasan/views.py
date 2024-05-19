@@ -66,7 +66,6 @@ def show_reviews(request, id_tayangan):
 
     return render(request, "ulasan.html", context)
 
-
 def add_review(request, id_tayangan):
     set_search_path()
     username_cookie = request.COOKIES.get('username')
@@ -111,7 +110,4 @@ def add_review(request, id_tayangan):
         "tayangan": tayangan[0],
         "reviews": reviews if isinstance(reviews, list) else [],
     }
-
-    print('OKE TERKIRIM', context)
-
     return render(request, "ulasan.html", context)

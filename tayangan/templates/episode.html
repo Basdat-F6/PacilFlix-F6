@@ -25,30 +25,33 @@
         <h2 class="mx-auto text-l font-medium tracking-tight text-gray-900 sm:text-4xl text-black">{{ episode.sub_judul }}</h2>
         
         {% if username_cookie %}
-        <form method="POST" action="{% url 'tayangan:watch-episode' id_series=episode.id_series sub_judul=episode.sub_judul %}">
-            {% csrf_token %}
-            <div class="flex flex-col items-center justify-center gap-5 mt-6 md:flex-row">
-                <input type="range" min="0" max="100" value="0" class="slider" id="watchProgress" name="watchProgress" oninput="this.nextElementSibling.value = this.value">
-                <input type="number" min="0" max="100" value="0" class="integer-input" id="watchProgressInt" name="watchProgressInt" oninput="this.previousElementSibling.value = this.value">
-                <button type="submit" class="no-underline inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all rounded-md shadow-xl sm:w-auto bg-gradient-to-r from-netflix to-blue-500 hover:bg-gradient-to-b dark:shadow-blue-900 shadow-blue-200 hover:shadow-2xl hover:shadow-blue-400 hover:-tranneutral-y-px">
-                    Watch Now
-                </button>
-            </div>
-        </form>
+            {% if is_released %}
+                <form method="POST" action="{% url 'tayangan:watch-episode' id_series=episode.id_series sub_judul=episode.sub_judul %}">
+                    {% csrf_token %}
+                    <div class="flex flex-col items-center justify-center gap-5 mt-6 md:flex-row">
+                        <input type="range" min="0" max="100" value="0" class="slider" id="watchProgress" name="watchProgress" oninput="this.nextElementSibling.value = this.value">
+                        <input type="number" min="0" max="100" value="0" class="integer-input" id="watchProgressInt" name="watchProgressInt" oninput="this.previousElementSibling.value = this.value">
+                        <button type="submit" class="no-underline inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all rounded-md shadow-xl sm:w-auto bg-gradient-to-r from-netflix to-blue-500 hover:bg-gradient-to-b dark:shadow-blue-900 shadow-blue-200 hover:shadow-2xl hover:shadow-blue-400 hover:-tranneutral-y-px">
+                            Watch Now
+                        </button>
+                    </div>
+                </form>
+                {% if progress %}
+                <div class="mt-6">
+                    <h3 class="text-xl font-bold">Your Watch Progress</h3>
+                    <p>Started at: {{ progress.start_date_time }}</p>
+                    <p>Ended at: {{ progress.end_date_time }}</p>
+                </div>
+                {% endif %}
 
-        {% if progress %}
-        <div class="mt-6">
-            <h3 class="text-xl font-bold">Your Watch Progress</h3>
-            <p>Started at: {{ progress.start_date_time }}</p>
-            <p>Ended at: {{ progress.end_date_time }}</p>
-        </div>
-        {% endif %}
-
-        <div class="flex flex-col gap-5 mt-6 md:flex-row">
-            <a class="no-underline my-4 px-6 py-4 text-white transition-all bg-netflix dark:bg-white dark:text-gray-800 rounded-md shadow-xl sm:w-auto hover:bg-gray-900 hover:text-white shadow-neutral-300 dark:shadow-neutral-700 hover:shadow-2xl hover:shadow-neutral-400 hover:-tranneutral-y-px" href="{{ episode.url_video }}">
-                Download Episode
-            </a>
-        </div>
+                <div class="flex flex-col gap-5 mt-6 md:flex-row">
+                    <a class="no-underline my-4 px-6 py-4 text-white transition-all bg-netflix dark:bg-white dark:text-gray-800 rounded-md shadow-xl sm:w-auto hover:bg-gray-900 hover:text-white shadow-neutral-300 dark:shadow-neutral-700 hover:shadow-2xl hover:shadow-neutral-400 hover:-tranneutral-y-px" href="{{ episode.url_video }}">
+                        Download Episode
+                    </a>
+                </div>
+            {% else %}
+                <p class="text-center text-lg text-gray-700">This episode will be available on {{ episode.release_date }}.</p>
+            {% endif %}
 
         <h2 class="mx-auto text-l font-medium tracking-tight text-gray-900 sm:text-4xl text-netflix">Tonton episode lainnya</h2>
         <div class="table-responsive">
