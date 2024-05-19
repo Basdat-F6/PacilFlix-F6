@@ -397,7 +397,6 @@ def detail_series(request, id):
         "progress": progress if isinstance(progress, list) else [],
         "error": None,
         "daftar_favorit": daftar_favorit,
-
     }
     return render(request, "detail_series.html", context)
 
