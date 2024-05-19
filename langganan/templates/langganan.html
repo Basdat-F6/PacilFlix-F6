@@ -42,12 +42,21 @@
         </thead>
         <tbody>
             <tr>
-                <td>Plus</td>
-                <td>Rp100.000,00</td>
-                <td>1080p</td>
-                <td>PC, PS5</td>
-                <td>2022-04-02</td>
-                <td>2022-04-06</td>
+                {% if langganan_sekarang %}
+                <td>{{langganan_sekarang.0}}</td>
+                <td>{{langganan_sekarang.1}}</td>
+                <td>{{langganan_sekarang.2}}</td>
+                <td>{{langganan_sekarang.3}}</td>
+                <td>{{langganan_sekarang.4}}</td>
+                <td>{{langganan_sekarang.5}}</td>
+                {% else %}
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                {% endif %}
             </tr>
         </tbody>
     </table>
@@ -69,27 +78,17 @@
             </tr>
         </thead>
         <tbody>
+            {% for paket in data_paket %}
             <tr>
-                <td>Esential</td>
-                <td>Rp50.000,00</td>
-                <td>720p</td>
-                <td>Mobile, Tablet, Smartwatch</td>
-                <td><button type="button" class="btn btn-outline-primary">Beli</button></td>
+                <td>{{paket.0}}</td>
+                <td>{{paket.1}}</td>
+                <td>{{paket.2}}</td>
+                <td>{{paket.3}}</td>
+                <td>
+                    <a href="{% url 'langganan:show_beli' param_value=paket.0 %}" class="btn btn-outline-primary">Beli</a>
+                </td>
             </tr>
-            <tr>
-                <td>Plus</td>
-                <td>Rp100.000,00</td>
-                <td>1080p</td>
-                <td>PC, PS5</td>
-                <td><button type="button" class="btn btn-outline-primary">Beli</button></td>
-            </tr>
-            <tr>
-                <td>Cinema</td>
-                <td>Rp200.000,00</td>
-                <td>4K</td>
-                <td>Smart TV, HTPC, Carplay</td>
-                <td><button type="button" class="btn btn-outline-primary">Beli</button></td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
 
@@ -111,14 +110,16 @@
             </tr>
         </thead>
         <tbody>
+            {% for transaksi in data_transaksi %}
             <tr>
-                <td>Esential</td>
-                <td>2022-02-18</td>
-                <td>2022-03-02</td>
-                <td>PayPal</td>
-                <td>2022-02-18 17:00:00</td>
-                <td>Rp50.000,00</td>
+                <td>{{transaksi.0}}</td>
+                <td>{{transaksi.4}}</td>
+                <td>{{transaksi.5}}</td>
+                <td>{{transaksi.6}}</td>
+                <td>{{transaksi.7}}</td>
+                <td>{{transaksi.1}}</td>
             </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>

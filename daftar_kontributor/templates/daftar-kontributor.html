@@ -29,9 +29,10 @@
               Tipe Kontributor
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" href="#">Pemain</a></li>
-              <li><a class="dropdown-item" href="#">Sutradara</a></li>
-              <li><a class="dropdown-item" href="#">Penulis Skenario</a></li>
+                <li><a class="dropdown-item" href="{% url 'daftar_kontributor:show_daftar_kontributor' 'semua' %}">Semua</a></li>
+              <li><a class="dropdown-item" href="{% url 'daftar_kontributor:show_daftar_kontributor' 'pemain' %}">Pemain</a></li>
+              <li><a class="dropdown-item" href="{% url 'daftar_kontributor:show_daftar_kontributor' 'sutradara' %}">Sutradara</a></li>
+              <li><a class="dropdown-item" href="{% url 'daftar_kontributor:show_daftar_kontributor' 'penulis_skenario' %}">Penulis Skenario</a></li>
             </ul>
           </div>
     </div>
@@ -48,24 +49,18 @@
             </tr>
         </thead>
         <tbody>
+            {% for person in data_kontributor %}
             <tr>
-                <td>Alice</td>
-                <td>Pemain</td>
-                <td>Perempuan</td>
-                <td>Jerman</td>
-            </tr>
-            <tr>
-                <td>George</td>
-                <td>Sutradara, Penulis Skenario</td>
+                <td>{{person.1}}</td>
+                <td>{{person.2}}</td>
+                {% if person.3 == 0 %}
                 <td>Laki-laki</td>
-                <td>Japanese</td>
-            </tr>
-            <tr>
-                <td>Quinn</td>
-                <td>Penulis Skenario</td>
+                {% else %}
                 <td>Perempuan</td>
-                <td>Indonesian</td>
+                {% endif %}
+                <td>{{person.4}}</td>
             </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>
