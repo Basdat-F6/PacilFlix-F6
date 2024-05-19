@@ -29,7 +29,7 @@ def query(query_str: str, params=None):
     return result
 
 str_film = """
-    SELECT T.id, T.judul, T.sinopsis_trailer as sinopsis, T.url_video_trailer as trailer_url, T.release_date_trailer as tanggal_rilis, F.release_date_film
+    SELECT DISTINCT ON (T.judul) T.id, T.judul, T.sinopsis_trailer as sinopsis, T.url_video_trailer as trailer_url, T.release_date_trailer as tanggal_rilis, F.release_date_film
     FROM "TAYANGAN" T
     JOIN "FILM" F ON T.id = F.id_tayangan
     ORDER BY T.judul
@@ -37,7 +37,7 @@ str_film = """
 
 
 str_series = """
-    SELECT T.id, T.judul, T.sinopsis_trailer as sinopsis, T.url_video_trailer as trailer_url, T.release_date_trailer as tanggal_rilis, S.release_date
+    SELECT DISTINCT ON (T.judul) T.id, T.judul, T.sinopsis_trailer as sinopsis, T.url_video_trailer as trailer_url, T.release_date_trailer as tanggal_rilis, S.release_date
     FROM "TAYANGAN" T
     JOIN "EPISODE" S ON T.id = S.id_series
     ORDER BY T.judul
